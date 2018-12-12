@@ -1,0 +1,10 @@
+azure_region="fr-central"
+azure_short_region="frc"
+client_name="test"
+environment="test"
+stack="ci"
+
+resource_group_name="rg-test"
+
+administrator_login="admin"
+administrator_password="pwd"
