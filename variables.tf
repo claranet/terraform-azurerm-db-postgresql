@@ -64,6 +64,7 @@ variable "geo_redundant_backup" {
 
 variable "administrator_login" {
   description = "The Administrator Login for the PostgreSQL Server. Changing this forces a new resource to be created."
+  default     = "claranet"
 }
 
 variable "administrator_password" {
@@ -72,7 +73,7 @@ variable "administrator_password" {
 
 variable "server_version" {
   description = "Specifies the version of PostgreSQL to use. Valid values are 9.5, 9.6, and 10.0. Changing this forces a new resource to be created."
-  default     = "9.5"
+  default     = "10.0"
 }
 
 variable "ssl_enforcement" {
@@ -91,7 +92,7 @@ variable "db_charset" {
 }
 
 variable "db_collation" {
-  description = "Specifies the Collation for the PostgreSQL Database, which needs to be a valid PostgreSQL Collation. Note that Microsoft uses different notation - en-US instead of en_US. Changing this forces a new resource to be created."
+  description = "Specifies the Collation for the PostgreSQL Database, which needs to be a valid PostgreSQL Collation. Changing this forces a new resource to be created."
   default     = "English_United States.1252"
 }
 

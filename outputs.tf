@@ -9,12 +9,14 @@ output "server_fqdn" {
 }
 
 output "administrator_login" {
-  value = "${var.administrator_login}"
+  description = "PostgreSQL global server administrator login"
+  value       = "${var.administrator_login}"
 }
 
 output "administrator_password" {
-  value     = "${var.administrator_password}"
-  sensitive = true
+  description = "PostgreSQL global server administrator password"
+  value       = "${var.administrator_password}"
+  sensitive   = true
 }
 
 output "server_id" {
