@@ -2,9 +2,9 @@ module "postgresql" {
   source = "Azure/postgresql/azurerm"
 
   resource_group_name = "${var.resource_group_name}"
-  location            = "${var.azure_region}"
+  location            = "${var.location}"
 
-  server_name  = "${coalesce(var.server_name, "psql-${var.environment}-${var.azure_short_region}-${var.client_name}-${var.stack}")}"
+  server_name  = "${coalesce(var.server_name, "psql-${var.environment}-${var.location_short}-${var.client_name}-${var.stack}")}"
   sku_name     = "${var.sku_name}"
   sku_capacity = "${var.sku_capacity}"
   sku_tier     = "${var.sku_tier}"

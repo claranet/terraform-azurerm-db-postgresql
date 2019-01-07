@@ -14,11 +14,11 @@ variable "resource_group_name" {
   description = "The name of the resource group in which to create the PostgreSQL Server. Changing this forces a new resource to be created."
 }
 
-variable "azure_region" {
+variable "location" {
   description = "Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created."
 }
 
-variable "azure_short_region" {
+variable "location_short" {
   description = "Short version of the Azure location, used by naming convention."
 }
 

@@ -1,5 +1,5 @@
-azure_region="fr-central"
-azure_short_region="frc"
+location="fr-central"
+location_short="frc"
 client_name="test"
 environment="test"
 stack="ci"
