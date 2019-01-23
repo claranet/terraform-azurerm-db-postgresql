@@ -1,5 +1,6 @@
 module "postgresql" {
-  source = "Azure/postgresql/azurerm"
+  # source = "Azure/postgresql/azurerm"
+  source = "git::https://github.com/claranet/terraform-azurerm-postgresql.git?ref=azurerm_postgresql_configuration"
 
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
@@ -29,4 +30,8 @@ module "postgresql" {
 
   vnet_rule_name_prefix = "${var.vnet_rule_name_prefix}"
   vnet_rules            = "${var.vnet_rules}"
+
+  postgresql_configurations = "${var.postgresql_configurations}"
+
+  tags = "${var.tags}"
 }
