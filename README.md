@@ -37,6 +37,7 @@ module "postgresql" {
 | geo_redundant_backup | Enable Geo-redundant or not for server backup. Valid values for this property are Enabled or Disabled, not supported for the basic tier. | string | `Disabled` | no |
 | location | Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created. | string | - | yes |
 | location_short | Short version of the Azure location, used by naming convention. | string | - | yes |
+| postgresql_configurations | A map with PostgreSQL configurations to enable. | map | `<map>` | no |
 | resource_group_name | The name of the resource group in which to create the PostgreSQL Server. Changing this forces a new resource to be created. | string | - | yes |
 | server_name | Specifies the name of the PostgreSQL Server. Changing this forces a new resource to be created. | string | `` | no |
 | server_version | Specifies the version of PostgreSQL to use. Valid values are 9.5, 9.6, and 10.0. Changing this forces a new resource to be created. | string | `10.0` | no |
@@ -47,6 +48,7 @@ module "postgresql" {
 | ssl_enforcement | Specifies if SSL should be enforced on connections. Possible values are Enabled and Disabled. | string | `Enabled` | no |
 | stack | Project stack name | string | - | yes |
 | storage_mb | Max storage allowed for a server. Possible values are between 5120 MB(5GB) and 1048576 MB(1TB) for the Basic SKU and between 5120 MB(5GB) and 4194304 MB(4TB) for General Purpose/Memory Optimized SKUs. | string | `5120` | no |
+| tags | A map of tags to set on every resources. Empty by default. | map | `<map>` | no |
 | vnet_rule_name_prefix | Specifies prefix for vnet rule names. | string | `postgresql-vnet-rule-` | no |
 | vnet_rules | The list of maps, describing vnet rules. Valud map items: name, subnet_id. | list | `<list>` | no |
 
