@@ -5,7 +5,7 @@ module "postgresql" {
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
 
-  server_name  = "${coalesce(var.server_name, "psql-${var.environment}-${var.location_short}-${var.client_name}-${var.stack}")}"
+  server_name  = "${coalesce(var.server_name, "${var.stack}-${var.client_name}-${var.location_short}-${var.environment}-psql")}"
   sku_name     = "${var.sku_name}"
   sku_capacity = "${var.sku_capacity}"
   sku_tier     = "${var.sku_tier}"
