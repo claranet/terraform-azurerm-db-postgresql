@@ -1,6 +1,6 @@
 module "postgresql" {
   # source = "Azure/postgresql/azurerm"
-  source = "git::https://github.com/claranet/terraform-azurerm-postgresql.git?ref=azurerm_postgresql_configuration"
+  source = "git::https://github.com/Azure/terraform-azurerm-postgresql.git?ref=master"
 
   resource_group_name = "${var.resource_group_name}"
   location            = "${var.location}"
