@@ -1,7 +1,9 @@
-# 0.1.1 (NA)
+# v0.1.1 - 2019-04-30
 
+Fixed
   * AZ-45: Uses Claranet fork
 
-# 0.1.0 (29/03/2019)
+# v0.1.0 - 2019-03-29
 
+Added
   * AZ-45: First Release
