@@ -1,0 +1,13 @@
+# Compiled files
+*.tfstate
+*.tfstate.backup
+
+# Go vendor directory
+vendor/
+
+# Module directory
+.terraform/
+.test-data/
+
+# Package version lock files
+Gemfile.lock
