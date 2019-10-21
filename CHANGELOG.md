@@ -1,3 +1,14 @@
+# v2.0.0 - Unreleased
+
+Breaking
+  * AZ-94 Terraform 0.12 / HCL2 format
+
+Added
+  * AZ-118: Add LICENSE, NOTICE & Github badges
+
+Updated
+  * AZ-45: Revamp module 
+
 # v1.0.0 - 2019-10-18
 
 Updated

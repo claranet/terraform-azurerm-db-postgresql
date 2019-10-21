@@ -1,22 +1,76 @@
-# Azure Database - Managed PostgreSQL
+# Azure Managed PostgreSQL Service
 
-This feature is a wrapper on top of the official Microsoft terraform module, available at https://registry.terraform.io/modules/Azure/postgresql/azurerm/ (https://github.com/Azure/terraform-azurerm-postgresql/)
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/db-postgresql/azurerm/)
 
-It will set Claranet defaults values and input variables names with Claranet best practices.
+This module creates an [Azure PostgreSQL server](https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html) with [databases](https://www.terraform.io/docs/providers/azurerm/r/postgresql_database.html) along with logging activated and [firewall rules](https://www.terraform.io/docs/providers/azurerm/r/postgresql_firewall_rule.html) and [virtual network rules](https://www.terraform.io/docs/providers/azurerm/r/postgresql_virtual_network_rule.html).
 
-## How to
+## Requirements
 
-```shell
+* [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.31
+
+## Terraform version compatibility
+ 
+| Module version | Terraform version |
+|----------------|-------------------|
+| >= 2.x.x       | 0.12.x            |
+| < 2.x.x        | 0.11.x            |
+
+## Usage
+
+This module is optimized to work with the [Claranet terraform-wrapper](https://github.com/claranet/terraform-wrapper) tool
+which set some terraform variables in the environment needed by this module.
+More details about variables set by the `terraform-wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
+
+```hcl
+module "azure-region" {
+  source  = "claranet/regions/azurerm"
+  version = "x.x.x"
+
+  azure_region = var.azure_region
+}
+
+module "rg" {
+  source  = "claranet/rg/azurerm"
+  version = "x.x.x"
+
+  location    = module.az-region.location
+  client_name = var.client_name
+  environment = var.environment
+  stack       = var.stack
+}
+
 module "postgresql" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/db-postgresql.git?ref=xxx"
+  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/db-postgresql.git?ref=vX.X.X"
 
-  client_name                  = "${var.client_name}"
-  location                     = "${module.az-regions.location}"
-  location_short               = "${module.az-regions.location-short}"
-  environment                  = "${var.environment}"
-  stack                        = "${var.stack}"
+  client_name         = var.client_name
+  resource_group_name = module.rg.resource_group_name
+  location            = module.azure-region.location
+  location_short      = module.azure-region.location_short
+  environment         = var.environment
+  stack               = var.stack
 
-  # Mandatory variables
+  server_sku = {
+    name     = "GP_Gen5_8"
+    capacity = 4
+    tier     = "GeneralPurpose"
+    family   = "Gen5"
+  }
+
+  server_storage_profile = {
+    storage_mb            = 5120
+    backup_retention_days = 10
+    geo_redundant_backup  = "Enabled"
+    auto_grow             = "Disabled"
+  }
+
+  administrator_login    = var.administrator_login
+  administrator_password = var.administrator_password
+
+  allowed_ip_addresses = ["x.x.x.x/32"]
+
+  databases_names     = ["mydatabase"]
+  databases_collation = { panoramis = "en_US" }
+  databases_charset   = { panoramis = "UTF8" }
 }
 ```
 
@@ -24,43 +78,54 @@ module "postgresql" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| administrator_login | The Administrator Login for the PostgreSQL Server. Changing this forces a new resource to be created. | string | `claranet` | no |
-| administrator_password | The Password associated with the administrator_login for the PostgreSQL Server. | string | - | yes |
-| backup_retention_days | Backup retention days for the server, supported values are between 7 and 35 days. | string | `7` | no |
-| client_name | Client name/account used in naming | string | - | yes |
-| db_charset | Specifies the Charset for the PostgreSQL Database, which needs to be a valid PostgreSQL Charset. Changing this forces a new resource to be created. | string | `UTF8` | no |
-| db_collation | Specifies the Collation for the PostgreSQL Database, which needs to be a valid PostgreSQL Collation. Changing this forces a new resource to be created. | string | `English_United States.1252` | no |
-| db_names | The list of names of the PostgreSQL Database, which needs to be a valid PostgreSQL identifier. Changing this forces a new resource to be created. | list | `<list>` | no |
-| environment | Project environment | string | - | yes |
-| firewall_rule_prefix | Specifies prefix for firewall rule names. | string | `firewall-` | no |
-| firewall_rules | The list of maps, describing firewall rules. Valid map items: name, start_ip, end_ip. | list | `<list>` | no |
-| geo_redundant_backup | Enable Geo-redundant or not for server backup. Valid values for this property are Enabled or Disabled, not supported for the basic tier. | string | `Disabled` | no |
-| location | Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created. | string | - | yes |
-| location_short | Short version of the Azure location, used by naming convention. | string | - | yes |
-| postgresql_configurations | A map with PostgreSQL configurations to enable. | map | `<map>` | no |
-| resource_group_name | The name of the resource group in which to create the PostgreSQL Server. Changing this forces a new resource to be created. | string | - | yes |
-| server_name | Specifies the name of the PostgreSQL Server. Changing this forces a new resource to be created. | string | `` | no |
-| server_version | Specifies the version of PostgreSQL to use. Valid values are 9.5, 9.6, and 10.0. Changing this forces a new resource to be created. | string | `10.0` | no |
-| sku_capacity | The scale up/out capacity, representing server's compute units | string | `2` | no |
-| sku_family | The family of hardware Gen4 or Gen5. | string | `Gen5` | no |
-| sku_name | Specifies the SKU Name for this PostgreSQL Server. The name of the SKU, follows the tier + family + cores pattern (e.g. B_Gen4_1, GP_Gen5_8). | string | `GP_Gen5_2` | no |
-| sku_tier | The tier of the particular SKU. Possible values are Basic, GeneralPurpose, and MemoryOptimized. | string | `GeneralPurpose` | no |
-| ssl_enforcement | Specifies if SSL should be enforced on connections. Possible values are Enabled and Disabled. | string | `Enabled` | no |
-| stack | Project stack name | string | - | yes |
-| storage_mb | Max storage allowed for a server. Possible values are between 5120 MB(5GB) and 1048576 MB(1TB) for the Basic SKU and between 5120 MB(5GB) and 4194304 MB(4TB) for General Purpose/Memory Optimized SKUs. | string | `5120` | no |
-| tags | A map of tags to set on every resources. Empty by default. | map | `<map>` | no |
-| vnet_rule_name_prefix | Specifies prefix for vnet rule names. | string | `postgresql-vnet-rule-` | no |
-| vnet_rules | The list of maps, describing vnet rules. Valud map items: name, subnet_id. | list | `<list>` | no |
+| administrator\_login | PostgreSQL administrator login | string | n/a | yes |
+| administrator\_password | PostgreSQL administrator password. Strong Password : https://docs.microsoft.com/en-us/sql/relational-databases/security/strong-passwords?view=sql-server-2017 | string | n/a | yes |
+| allowed\_ip\_addresses | List of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state | list(string) | n/a | yes |
+| client\_name | Name of client | string | n/a | yes |
+| custom\_server\_name | Custom Server Name identifier | string | `""` | no |
+| databases\_charset | Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE | map(string) | n/a | yes |
+| databases\_collation | Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN | map(string) | n/a | yes |
+| databases\_names | List of databases names | list(string) | n/a | yes |
+| enable\_logs\_to\_log\_analytics | Boolean flag to specify whether the logs should be sent to Log Analytics | string | `"false"` | no |
+| enable\_logs\_to\_storage | Boolean flag to specify whether the logs should be sent to the Storage Account | string | `"false"` | no |
+| environment | Name of application's environnement | string | n/a | yes |
+| extra\_tags | Map of custom tags | map(string) | `{}` | no |
+| firewall\_rules | List of firewall rules to create | list(map(string)) | `[]` | no |
+| location | Azure location for Key Vault. | string | n/a | yes |
+| location\_short | Short string for Azure location. | string | n/a | yes |
+| logs\_log\_analytics\_workspace\_id | Log Analytics Workspace id for logs | string | `""` | no |
+| logs\_storage\_account\_id | Storage Account id for logs | string | `""` | no |
+| logs\_storage\_retention | Retention in days for logs on Storage Account | string | `"30"` | no |
+| name\_prefix | Optional prefix for PostgreSQL server name | string | `""` | no |
+| postgresql\_configurations | PostgreSQL configurations to enable | list(map(string)) | `[]` | no |
+| postgresql\_ssl\_enforcement | Possible values are Enforced and Disabled | string | `"Enabled"` | no |
+| postgresql\_version | Valid values are 9.5, 9.6, 10, 10.0, and 11 | string | `"11"` | no |
+| postgresql\_vnet\_rules | List of vnet rules to create | list(map(string)) | `[]` | no |
+| resource\_group\_name | Name of the application ressource group, herited from infra module | string | n/a | yes |
+| server\_sku | Server class : https://www.terraform.io/docs/providers/azurerm/r/postgresql\_server.html#sku | map(string) | `{ "capacity": 4, "family": "Gen5", "name": "GP_Gen5_8", "tier": "GeneralPurpose" }` | no |
+| server\_storage\_profile | Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql\_server.html#storage\_profile | map(string) | `{ "auto_grow": "", "backup_retention_days": 10, "geo_redundant_backup": "Enabled", "storage_mb": 5120 }` | no |
+| stack | Name of application stack | string | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| administrator_login | PostgreSQL global server administrator login |
-| administrator_password | PostgreSQL global server administrator password |
-| database_ids | The list of all database resource ids |
-| firewall_rule_ids | The list of all firewall rule resource ids |
-| server_fqdn | The fully qualified domain name (FQDN) of the PostgreSQL server |
-| server_id | The resource id of the PostgreSQL server |
-| server_name | The name of the PostgreSQL server |
-| vnet_rule_ids | The list of all vnet rule resource ids |
+| postgresql\_administrator\_login | Administrator login for PostgreSQL server |
+| postgresql\_databases\_names | List of databases names |
+| postgresql\_firewall\_rule\_ids | List of PostgreSQL created rules |
+| postgresql\_fqdn | FQDN of the PostgreSQL server |
+| postgresql\_server\_id | PostgreSQL server ID |
+
+## Related documentation
+
+Terraform Azure PostgreSQL Server documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html]
+
+Terraform Azure PostgreSQL Database documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_database.html]
+
+Terraform Azure PostgreSQL Virtual Network Rule documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_virtual_network_rule.html]
+
+Terraform Azure PostgreSQL Firewall documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_firewall_rule.html]
+
+Terraform Azure PostgreSQL Configuration documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.htmlhttps://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.html]
+
+Microsoft Azure documentation: [https://docs.microsoft.com/fr-fr/azure/postgresql/overview]

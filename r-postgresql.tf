@@ -44,11 +44,11 @@ resource "azurerm_postgresql_database" "postgresql_db" {
 }
 
 resource "azurerm_postgresql_configuration" "postgresql_config" {
-  count               = length(var.postgresql_options)
-  name                = var.postgresql_options[count.index].name
+  count               = length(var.postgresql_configurations)
+  name                = var.postgresql_configurations[count.index].name
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
-  value               = var.postgresql_options[count.index].value
+  value               = var.postgresql_configurations[count.index].value
 }
 
 resource "azurerm_postgresql_virtual_network_rule" "vnet_rules" {

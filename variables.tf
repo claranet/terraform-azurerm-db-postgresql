@@ -81,16 +81,16 @@ variable "server_storage_profile" {
     storage_mb            = 5120
     backup_retention_days = 10
     geo_redundant_backup  = "Enabled"
-    auto_grow             = null
+    auto_grow             = ""
   }
 
-  description = "Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#storage_profile"
+  description = "Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#storage_profile"
 }
 
-variable "postgresql_options" {
+variable "postgresql_configurations" {
   type        = list(map(string))
   default     = []
-  description = "List of configuration options : https://docs.microsoft.com/fr-fr/azure/mysql/howto-server-parameters#list-of-configurable-server-parameters"
+  description = " PostgreSQL configurations to enable"
 }
 
 variable "postgresql_version" {
@@ -122,12 +122,12 @@ variable "databases_names" {
 
 variable "databases_charset" {
   type        = map(string)
-  description = "Valid mysql charset : https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html"
+  description = "Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE"
 }
 
 variable "databases_collation" {
   type        = map(string)
-  description = "Valid mysql collation : https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html"
+  description = "Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN"
 }
 
 variable "enable_logs_to_storage" {
