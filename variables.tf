@@ -28,6 +28,12 @@ variable "location_short" {
   type        = string
 }
 
+variable "name_prefix" {
+  description = "Optional prefix for PostgreSQL server name"
+  type        = string
+  default     = ""
+}
+
 variable "custom_server_name" {
   type        = string
   description = "Custom Server Name identifier"
@@ -95,6 +101,18 @@ variable "postgresql_version" {
 variable "postgresql_ssl_enforcement" {
   default     = "Enabled"
   description = "Possible values are Enforced and Disabled"
+}
+
+variable "postgresql_vnet_rules" {
+  type        = list(map(string))
+  description = "List of vnet rules to create"
+  default     = []
+}
+
+variable "firewall_rules" {
+  type        = list(map(string))
+  description = "List of firewall rules to create"
+  default     = []
 }
 
 variable "databases_names" {

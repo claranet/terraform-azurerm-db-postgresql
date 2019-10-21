@@ -1,7 +1,7 @@
 resource "azurerm_postgresql_server" "postgresql_server" {
   name = coalesce(
     var.custom_server_name,
-    "${var.stack}-${var.client_name}-${var.location_short}-${var.environment}-postgresql",
+    local.default_name_server,
   )
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -53,8 +53,17 @@ resource "azurerm_postgresql_configuration" "postgresql_config" {
 
 resource "azurerm_postgresql_virtual_network_rule" "vnet_rules" {
   count               = length(var.postgresql_vnet_rules)
-  name                = lookup(var.vnet_rules[count.index], "name", count.index)
+  name                = lookup(var.postgresql_vnet_rules[count.index], "name", count.index)
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
-  subnet_id           = lookup(var.vnet_rules[count.index], "subnet_id")
+  subnet_id           = lookup(var.postgresql_vnet_rules[count.index], "subnet_id")
+}
+
+resource "azurerm_postgresql_firewall_rule" "firewall_rules" {
+  count               = length(var.firewall_rules)
+  name                = lookup(var.firewall_rules[count.index], "name", count.index)
+  resource_group_name = var.resource_group_name
+  server_name         = azurerm_postgresql_server.postgresql_server.name
+  start_ip_address    = lookup(var.firewall_rules[count.index], "start_ip")
+  end_ip_address      = lookup(var.firewall_rules[count.index], "end_ip")
 }
