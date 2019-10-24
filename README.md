@@ -33,14 +33,15 @@ module "rg" {
   source  = "claranet/rg/azurerm"
   version = "x.x.x"
 
-  location    = module.az-region.location
+  location    = module.azure-region.location
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack
 }
 
 module "postgresql" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/db-postgresql.git?ref=vX.X.X"
+  source  = "claranet/db-postgresql/azurerm"
+  version = "x.x.x"
 
   client_name         = var.client_name
   resource_group_name = module.rg.resource_group_name
@@ -69,8 +70,13 @@ module "postgresql" {
   allowed_ip_addresses = ["x.x.x.x/32"]
 
   databases_names     = ["mydatabase"]
-  databases_collation = { panoramis = "en_US" }
-  databases_charset   = { panoramis = "UTF8" }
+  databases_collation = { mydatabase = "en_US" }
+  databases_charset   = { mydatabase = "UTF8" }
+
+  enable_logs_to_storage          = "true"
+  enable_logs_to_log_analytics    = "true"
+  logs_storage_account_id         = data.terraform_remote_state.run.outputs.logs_storage_account_id
+  logs_log_analytics_workspace_id = data.terraform_remote_state.run.outputs.log_analytics_workspace_id
 }
 ```
 
