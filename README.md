@@ -50,12 +50,10 @@ module "postgresql" {
   environment         = var.environment
   stack               = var.stack
 
-  server_sku = {
-    name     = "GP_Gen5_8"
-    capacity = 4
-    tier     = "GeneralPurpose"
-    family   = "Gen5"
-  }
+  tier     = "GeneralPurpose"
+  capacity = 4
+
+  allowed_cidrs = ["10.0.0.0/24", "12.34.56.78/32"]
 
   server_storage_profile = {
     storage_mb            = 5120
@@ -67,16 +65,13 @@ module "postgresql" {
   administrator_login    = var.administrator_login
   administrator_password = var.administrator_password
 
-  allowed_ip_addresses = ["x.x.x.x/32"]
+  force_ssl = true
 
   databases_names     = ["mydatabase"]
   databases_collation = { mydatabase = "en_US" }
   databases_charset   = { mydatabase = "UTF8" }
 
-  enable_logs_to_storage          = "true"
-  enable_logs_to_log_analytics    = "true"
-  logs_storage_account_id         = data.terraform_remote_state.run.outputs.logs_storage_account_id
-  logs_log_analytics_workspace_id = data.terraform_remote_state.run.outputs.log_analytics_workspace_id
+  extra_tags = var.extra_tags
 }
 ```
 
@@ -86,17 +81,19 @@ module "postgresql" {
 |------|-------------|:----:|:-----:|:-----:|
 | administrator\_login | PostgreSQL administrator login | string | n/a | yes |
 | administrator\_password | PostgreSQL administrator password. Strong Password : https://docs.microsoft.com/en-us/sql/relational-databases/security/strong-passwords?view=sql-server-2017 | string | n/a | yes |
-| allowed\_ip\_addresses | List of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state | list(string) | n/a | yes |
+| allowed\_cidrs | List of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state | list(string) | n/a | yes |
+| capacity | Capacity for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#capacity | number | `"4"` | no |
 | client\_name | Name of client | string | n/a | yes |
+| create\_databases\_users | True to create a user named <db>\_user per database with generated password and role db\_owner. | string | `"true"` | no |
 | custom\_server\_name | Custom Server Name identifier | string | `""` | no |
-| databases\_charset | Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE | map(string) | n/a | yes |
-| databases\_collation | Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN | map(string) | n/a | yes |
+| databases\_charset | Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE | map(string) | `{}` | no |
+| databases\_collation | Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN | map(string) | `{}` | no |
 | databases\_names | List of databases names | list(string) | n/a | yes |
-| enable\_logs\_to\_log\_analytics | Boolean flag to specify whether the logs should be sent to Log Analytics | string | `"false"` | no |
-| enable\_logs\_to\_storage | Boolean flag to specify whether the logs should be sent to the Storage Account | string | `"false"` | no |
+| enable\_logs\_to\_log\_analytics | Boolean flag to specify whether the logs should be sent to Log Analytics | bool | `"false"` | no |
+| enable\_logs\_to\_storage | Boolean flag to specify whether the logs should be sent to the Storage Account | bool | `"false"` | no |
 | environment | Name of application's environnement | string | n/a | yes |
 | extra\_tags | Map of custom tags | map(string) | `{}` | no |
-| firewall\_rules | List of firewall rules to create | list(map(string)) | `[]` | no |
+| force\_ssl | Force usage of SSL | bool | `"true"` | no |
 | location | Azure location for Key Vault. | string | n/a | yes |
 | location\_short | Short string for Azure location. | string | n/a | yes |
 | logs\_log\_analytics\_workspace\_id | Log Analytics Workspace id for logs | string | `""` | no |
@@ -106,10 +103,9 @@ module "postgresql" {
 | postgresql\_configurations | PostgreSQL configurations to enable | list(map(string)) | `[]` | no |
 | postgresql\_version | Valid values are 9.5, 9.6, 10, 10.0, and 11 | string | `"11"` | no |
 | resource\_group\_name | Name of the application ressource group, herited from infra module | string | n/a | yes |
-| server\_sku | Server class : https://www.terraform.io/docs/providers/azurerm/r/postgresql\_server.html#sku | map(string) | `{ "capacity": 4, "family": "Gen5", "name": "GP_Gen5_8", "tier": "GeneralPurpose" }` | no |
-| server\_storage\_profile | Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql\_server.html#storage\_profile | map(string) | `{ "auto_grow": "", "backup_retention_days": 10, "geo_redundant_backup": "Enabled", "storage_mb": 5120 }` | no |
-| ssl\_enforcement | Possible values are Enforced and Disabled | string | `"Enabled"` | no |
+| server\_storage\_profile | Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#storage_profile | map(string) | `{ "auto_grow": "", "backup_retention_days": 10, "geo_redundant_backup": "Enabled", "storage_mb": 5120 }` | no |
 | stack | Name of application stack | string | n/a | yes |
+| tier | Tier for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#tier Possible values are: GeneralPurpose, Basic, MemoryOptimized | string | `"GeneralPurpose"` | no |
 | vnet\_rules | List of vnet rules to create | list(map(string)) | `[]` | no |
 
 ## Outputs
@@ -127,14 +123,14 @@ module "postgresql" {
 
 ## Related documentation
 
-Terraform Azure PostgreSQL Server documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html]
+Terraform Azure PostgreSQL Server documentation: [www.terraform.io/docs/providers/azurerm/r/postgresql_server.html](https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html)
 
-Terraform Azure PostgreSQL Database documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_database.html]
+Terraform Azure PostgreSQL Database documentation: [www.terraform.io/docs/providers/azurerm/r/postgresql_database.html](https://www.terraform.io/docs/providers/azurerm/r/postgresql_database.html)
 
-Terraform Azure PostgreSQL Virtual Network Rule documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_virtual_network_rule.html]
+Terraform Azure PostgreSQL Virtual Network Rule documentation: [www.terraform.io/docs/providers/azurerm/r/postgresql_virtual_network_rule.html](https://www.terraform.io/docs/providers/azurerm/r/postgresql_virtual_network_rule.html)
 
-Terraform Azure PostgreSQL Firewall documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_firewall_rule.html]
+Terraform Azure PostgreSQL Firewall documentation: [www.terraform.io/docs/providers/azurerm/r/postgresql_firewall_rule.html](https://www.terraform.io/docs/providers/azurerm/r/postgresql_firewall_rule.html)
 
-Terraform Azure PostgreSQL Configuration documentation: [https://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.htmlhttps://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.html]
+Terraform Azure PostgreSQL Configuration documentation: [www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.htmlhttps://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.html](https://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.htmlhttps://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.html)
 
-Microsoft Azure documentation: [https://docs.microsoft.com/fr-fr/azure/postgresql/overview]
+Microsoft Azure documentation: [docs.microsoft.com/fr-fr/azure/postgresql/overview](https://docs.microsoft.com/fr-fr/azure/postgresql/overview)

@@ -50,20 +50,3 @@ resource "azurerm_postgresql_configuration" "postgresql_config" {
   server_name         = azurerm_postgresql_server.postgresql_server.name
   value               = var.postgresql_configurations[count.index].value
 }
-
-resource "azurerm_postgresql_virtual_network_rule" "vnet_rules" {
-  count               = length(var.vnet_rules)
-  name                = lookup(var.vnet_rules[count.index], "name", count.index)
-  resource_group_name = var.resource_group_name
-  server_name         = azurerm_postgresql_server.postgresql_server.name
-  subnet_id           = lookup(var.vnet_rules[count.index], "subnet_id")
-}
-
-resource "azurerm_postgresql_firewall_rule" "firewall_rules" {
-  count               = length(var.firewall_rules)
-  name                = lookup(var.firewall_rules[count.index], "name", count.index)
-  resource_group_name = var.resource_group_name
-  server_name         = azurerm_postgresql_server.postgresql_server.name
-  start_ip_address    = lookup(var.firewall_rules[count.index], "start_ip")
-  end_ip_address      = lookup(var.firewall_rules[count.index], "end_ip")
-}

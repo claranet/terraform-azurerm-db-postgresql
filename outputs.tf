@@ -14,7 +14,7 @@ output "postgresql_database_ids" {
 }
 
 output "postgresql_firewall_rule_ids" {
-  value       = azurerm_postgresql_firewall_rule.postgresql_rule.*.id
+  value       = azurerm_postgresql_firewall_rule.firewall_rules.*.id
   description = "List of PostgreSQL created rules"
 }
 
