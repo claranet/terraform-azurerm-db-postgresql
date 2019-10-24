@@ -23,7 +23,7 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   administrator_login          = var.administrator_login
   administrator_login_password = var.administrator_password
   version                      = var.postgresql_version
-  ssl_enforcement              = var.postgresql_ssl_enforcement
+  ssl_enforcement              = var.ssl_enforcement
 
   tags = merge(
     {
@@ -52,11 +52,11 @@ resource "azurerm_postgresql_configuration" "postgresql_config" {
 }
 
 resource "azurerm_postgresql_virtual_network_rule" "vnet_rules" {
-  count               = length(var.postgresql_vnet_rules)
-  name                = lookup(var.postgresql_vnet_rules[count.index], "name", count.index)
+  count               = length(var.vnet_rules)
+  name                = lookup(var.vnet_rules[count.index], "name", count.index)
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
-  subnet_id           = lookup(var.postgresql_vnet_rules[count.index], "subnet_id")
+  subnet_id           = lookup(var.vnet_rules[count.index], "subnet_id")
 }
 
 resource "azurerm_postgresql_firewall_rule" "firewall_rules" {

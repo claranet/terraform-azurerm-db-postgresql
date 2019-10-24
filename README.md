@@ -104,23 +104,26 @@ module "postgresql" {
 | logs\_storage\_retention | Retention in days for logs on Storage Account | string | `"30"` | no |
 | name\_prefix | Optional prefix for PostgreSQL server name | string | `""` | no |
 | postgresql\_configurations | PostgreSQL configurations to enable | list(map(string)) | `[]` | no |
-| postgresql\_ssl\_enforcement | Possible values are Enforced and Disabled | string | `"Enabled"` | no |
 | postgresql\_version | Valid values are 9.5, 9.6, 10, 10.0, and 11 | string | `"11"` | no |
-| postgresql\_vnet\_rules | List of vnet rules to create | list(map(string)) | `[]` | no |
 | resource\_group\_name | Name of the application ressource group, herited from infra module | string | n/a | yes |
 | server\_sku | Server class : https://www.terraform.io/docs/providers/azurerm/r/postgresql\_server.html#sku | map(string) | `{ "capacity": 4, "family": "Gen5", "name": "GP_Gen5_8", "tier": "GeneralPurpose" }` | no |
 | server\_storage\_profile | Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql\_server.html#storage\_profile | map(string) | `{ "auto_grow": "", "backup_retention_days": 10, "geo_redundant_backup": "Enabled", "storage_mb": 5120 }` | no |
+| ssl\_enforcement | Possible values are Enforced and Disabled | string | `"Enabled"` | no |
 | stack | Name of application stack | string | n/a | yes |
+| vnet\_rules | List of vnet rules to create | list(map(string)) | `[]` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | postgresql\_administrator\_login | Administrator login for PostgreSQL server |
+| postgresql\_configuration\_id | The list of all configurations resource ids |
+| postgresql\_database\_ids | The list of all database resource ids |
 | postgresql\_databases\_names | List of databases names |
 | postgresql\_firewall\_rule\_ids | List of PostgreSQL created rules |
 | postgresql\_fqdn | FQDN of the PostgreSQL server |
 | postgresql\_server\_id | PostgreSQL server ID |
+| postgresql\_vnet\_rule\_ids | The list of all vnet rule resource ids |
 
 ## Related documentation
 

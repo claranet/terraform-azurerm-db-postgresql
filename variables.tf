@@ -98,12 +98,12 @@ variable "postgresql_version" {
   description = "Valid values are 9.5, 9.6, 10, 10.0, and 11"
 }
 
-variable "postgresql_ssl_enforcement" {
+variable "ssl_enforcement" {
   default     = "Enabled"
   description = "Possible values are Enforced and Disabled"
 }
 
-variable "postgresql_vnet_rules" {
+variable "vnet_rules" {
   type        = list(map(string))
   description = "List of vnet rules to create"
   default     = []
