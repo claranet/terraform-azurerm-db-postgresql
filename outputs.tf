@@ -1,6 +1,7 @@
 output "postgresql_administrator_login" {
   value       = "${azurerm_postgresql_server.postgresql_server.administrator_login}@${azurerm_postgresql_server.postgresql_server.name}"
   description = "Administrator login for PostgreSQL server"
+  sensitive   = true
 }
 
 output "postgresql_databases_names" {

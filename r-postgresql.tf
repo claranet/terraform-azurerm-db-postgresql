@@ -7,10 +7,10 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   resource_group_name = var.resource_group_name
 
   sku {
-    capacity = lookup(var.server_sku, "capacity", null)
-    family   = lookup(var.server_sku, "family", null)
-    name     = lookup(var.server_sku, "name", null)
-    tier     = lookup(var.server_sku, "tier", null)
+    name     = join("_", [lookup(local.tier_map, var.tier, "GeneralPurpose"), "Gen5", var.capacity])
+    capacity = var.capacity
+    tier     = var.tier
+    family   = "Gen5"
   }
 
   storage_profile {
@@ -23,7 +23,7 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   administrator_login          = var.administrator_login
   administrator_login_password = var.administrator_password
   version                      = var.postgresql_version
-  ssl_enforcement              = var.ssl_enforcement
+  ssl_enforcement              = var.force_ssl ? "Enabled" : "Disabled"
 
   tags = merge(
     {
@@ -39,8 +39,8 @@ resource "azurerm_postgresql_database" "postgresql_db" {
   name                = element(var.databases_names, count.index)
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
-  charset             = var.databases_charset[element(var.databases_names, count.index)]
-  collation           = var.databases_collation[element(var.databases_names, count.index)]
+  charset             = lookup(var.databases_charset, element(var.databases_names, count.index), "UTF8")
+  collation           = lookup(var.databases_collation, element(var.databases_names, count.index), "en_US")
 }
 
 resource "azurerm_postgresql_configuration" "postgresql_config" {

@@ -50,7 +50,7 @@ variable "administrator_password" {
   type        = string
 }
 
-variable "allowed_ip_addresses" {
+variable "allowed_cidrs" {
   type        = list(string)
   description = "List of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state"
 }
@@ -61,17 +61,16 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "server_sku" {
-  type = map(string)
+variable "tier" {
+  type        = string
+  description = "Tier for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#tier Possible values are: GeneralPurpose, Basic, MemoryOptimized"
+  default     = "GeneralPurpose"
+}
 
-  default = {
-    name     = "GP_Gen5_8"
-    capacity = 4
-    tier     = "GeneralPurpose"
-    family   = "Gen5"
-  }
-
-  description = "Server class : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#sku"
+variable "capacity" {
+  type        = number
+  description = "Capacity for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#capacity"
+  default     = 4
 }
 
 variable "server_storage_profile" {
@@ -81,7 +80,7 @@ variable "server_storage_profile" {
     storage_mb            = 5120
     backup_retention_days = 10
     geo_redundant_backup  = "Enabled"
-    auto_grow             = ""
+    auto_grow             = "Disabled"
   }
 
   description = "Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#storage_profile"
@@ -94,24 +93,20 @@ variable "postgresql_configurations" {
 }
 
 variable "postgresql_version" {
+  type        = string
   default     = "11"
   description = "Valid values are 9.5, 9.6, 10, 10.0, and 11"
 }
 
-variable "ssl_enforcement" {
-  default     = "Enabled"
-  description = "Possible values are Enforced and Disabled"
+variable "force_ssl" {
+  type        = bool
+  default     = true
+  description = "Force usage of SSL"
 }
 
 variable "vnet_rules" {
   type        = list(map(string))
   description = "List of vnet rules to create"
-  default     = []
-}
-
-variable "firewall_rules" {
-  type        = list(map(string))
-  description = "List of firewall rules to create"
   default     = []
 }
 
@@ -123,23 +118,25 @@ variable "databases_names" {
 variable "databases_charset" {
   type        = map(string)
   description = "Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE"
+  default     = {}
 }
 
 variable "databases_collation" {
   type        = map(string)
   description = "Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN"
+  default     = {}
 }
 
 variable "enable_logs_to_storage" {
   description = "Boolean flag to specify whether the logs should be sent to the Storage Account"
-  type        = string
-  default     = "false"
+  type        = bool
+  default     = false
 }
 
 variable "enable_logs_to_log_analytics" {
   description = "Boolean flag to specify whether the logs should be sent to Log Analytics"
-  type        = string
-  default     = "false"
+  type        = bool
+  default     = false
 }
 
 variable "logs_storage_retention" {
@@ -159,4 +156,3 @@ variable "logs_log_analytics_workspace_id" {
   type        = string
   default     = ""
 }
-

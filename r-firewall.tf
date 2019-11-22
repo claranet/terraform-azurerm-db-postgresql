@@ -1,8 +1,8 @@
 resource "azurerm_postgresql_firewall_rule" "firewall_rules" {
-  count               = length(var.firewall_rules)
-  name                = lookup(var.firewall_rules[count.index], "name", count.index)
+  count               = length(var.allowed_cidrs)
+  name                = replace(replace(var.allowed_cidrs[count.index], ".", "-"), "/", "_")
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
-  start_ip_address    = lookup(var.firewall_rules[count.index], "start_ip")
-  end_ip_address      = lookup(var.firewall_rules[count.index], "end_ip")
+  start_ip_address    = cidrhost(var.allowed_cidrs[count.index], 0)
+  end_ip_address      = cidrhost(var.allowed_cidrs[count.index], -1)
 }
