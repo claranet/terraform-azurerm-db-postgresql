@@ -7,6 +7,7 @@ This module creates an [Azure PostgreSQL server](https://www.terraform.io/docs/p
 ## Requirements
 
 * [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.31
+* [Ansible](https://docs.ansible.com/ansible/latest/index.html) >= 2.4
 
 ## Terraform version compatibility
  

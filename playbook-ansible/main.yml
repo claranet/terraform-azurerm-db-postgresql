@@ -1,0 +1,24 @@
+---
+- name: Manage users - creation + grants
+  hosts: localhost
+
+  tasks:
+    - name: Create PostgreSQL user
+      postgresql_user:
+        login_host: "{{ server_fqdn }}"
+        login_user: "{{ administrator_user }}"
+        login_password: "{{ administrator_password }}"
+        db: "{{ database_name }}"
+        name: "{{ database_name }}_user"
+        password: "{{ database_user_password }}"
+        priv: "ALL"
+        expires: "infinity"
+
+    - name: Remove public role on databases
+      postgresql_user:
+        login_host: "{{ server_fqdn }}"
+        login_user: "{{ administrator_user }}"
+        login_password: "{{ administrator_password }}"
+        db: "{{ database_name }}"
+        name: "public"
+        state: absent

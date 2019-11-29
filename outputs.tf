@@ -38,3 +38,9 @@ output "postgresql_configuration_id" {
   value       = azurerm_postgresql_configuration.postgresql_config.*.id
   description = "The list of all configurations resource ids"
 }
+
+output "postgresql_users_passwords" {
+  value       = random_string.db_passwords.*.result
+  description = "List of passwords for databases users"
+  sensitive   = true
+}
