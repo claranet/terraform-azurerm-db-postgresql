@@ -14,5 +14,9 @@ resource "null_resource" "db_users" {
     working_dir = "${path.module}/playbook-ansible"
   }
 
+  triggers = {
+    database = azurerm_postgresql_database.postgresql_db[count.index].id
+  }
+
   depends_on = [azurerm_postgresql_server.postgresql_server, azurerm_postgresql_database.postgresql_db, random_string.db_passwords]
 }
