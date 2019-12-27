@@ -22,3 +22,13 @@
         db: "{{ database_name }}"
         name: "public"
         state: absent
+
+## Step above is to fix CVE-2018-1058. 
+## Description : https://wiki.postgresql.org/wiki/A_Guide_to_CVE-2018-1058%3A_Protect_Your_Search_Path#Do_not_allow_users_to_create_new_objects_in_the_public_schema
+    - name: Remove CREATE on schema public - fix CVE-2018-1058
+      postgresql_query:
+        login_host: "{{ server_fqdn }}"
+        login_user: "{{ administrator_user }}"
+        login_password: "{{ administrator_password }}"
+        db: "{{ database_name }}"
+        query: REVOKE CREATE ON SCHEMA public FROM public;
