@@ -40,7 +40,7 @@ output "postgresql_configuration_id" {
 }
 
 output "postgresql_users_passwords" {
-  value       = random_string.db_passwords.*.result
+  value       = random_password.db_passwords.*.result
   description = "List of passwords for databases users"
   sensitive   = true
 }
