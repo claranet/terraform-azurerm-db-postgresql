@@ -86,6 +86,7 @@ module "postgresql" {
 | allowed\_cidrs | List of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state | list(string) | n/a | yes |
 | capacity | Capacity for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#capacity | number | `"4"` | no |
 | client\_name | Name of client | string | n/a | yes |
+| create\_databases\_users | True to create a user named <db>\_user per database with generated password and role db\_owner. | bool | `"true"` | no |
 | custom\_server\_name | Custom Server Name identifier | string | `""` | no |
 | databases\_charset | Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE | map(string) | `{}` | no |
 | databases\_collation | Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN | map(string) | `{}` | no |
@@ -120,6 +121,7 @@ module "postgresql" {
 | postgresql\_firewall\_rule\_ids | List of PostgreSQL created rules |
 | postgresql\_fqdn | FQDN of the PostgreSQL server |
 | postgresql\_server\_id | PostgreSQL server ID |
+| postgresql\_users\_passwords | List of passwords for databases users |
 | postgresql\_vnet\_rule\_ids | The list of all vnet rule resource ids |
 
 ## Related documentation
