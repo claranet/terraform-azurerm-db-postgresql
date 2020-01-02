@@ -93,8 +93,8 @@ variable "postgresql_configurations" {
 }
 
 variable "postgresql_version" {
-  type        = string
-  default     = "11"
+  type        = number
+  default     = 11
   description = "Valid values are 9.5, 9.6, 10, 10.0, and 11"
 }
 
@@ -141,8 +141,8 @@ variable "enable_logs_to_log_analytics" {
 
 variable "logs_storage_retention" {
   description = "Retention in days for logs on Storage Account"
-  type        = string
-  default     = "30"
+  type        = number
+  default     = 30
 }
 
 variable "logs_storage_account_id" {

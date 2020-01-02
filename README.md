@@ -97,10 +97,10 @@ module "postgresql" {
 | location\_short | Short string for Azure location. | string | n/a | yes |
 | logs\_log\_analytics\_workspace\_id | Log Analytics Workspace id for logs | string | `""` | no |
 | logs\_storage\_account\_id | Storage Account id for logs | string | `""` | no |
-| logs\_storage\_retention | Retention in days for logs on Storage Account | string | `"30"` | no |
+| logs\_storage\_retention | Retention in days for logs on Storage Account | number | `"30"` | no |
 | name\_prefix | Optional prefix for PostgreSQL server name | string | `""` | no |
 | postgresql\_configurations | PostgreSQL configurations to enable | list(map(string)) | `[]` | no |
-| postgresql\_version | Valid values are 9.5, 9.6, 10, 10.0, and 11 | string | `"11"` | no |
+| postgresql\_version | Valid values are 9.5, 9.6, 10, 10.0, and 11 | number | `"11"` | no |
 | resource\_group\_name | Name of the application ressource group, herited from infra module | string | n/a | yes |
 | server\_storage\_profile | Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#storage_profile | map(string) | `{ "auto_grow": "", "backup_retention_days": 10, "geo_redundant_backup": "Enabled", "storage_mb": 5120 }` | no |
 | stack | Name of application stack | string | n/a | yes |
