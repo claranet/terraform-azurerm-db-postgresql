@@ -31,4 +31,4 @@
         login_user: "{{ administrator_user }}"
         login_password: "{{ administrator_password }}"
         db: "{{ database_name }}"
-        query: REVOKE CREATE ON SCHEMA public FROM public;
+        query: REVOKE ALL ON SCHEMA public FROM public;
