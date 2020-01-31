@@ -40,7 +40,7 @@ resource "azurerm_postgresql_database" "postgresql_db" {
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
   charset             = lookup(var.databases_charset, element(var.databases_names, count.index), "UTF8")
-  collation           = lookup(var.databases_collation, element(var.databases_names, count.index), "en_US")
+  collation           = lookup(var.databases_collation, element(var.databases_names, count.index), "en-US")
 }
 
 resource "azurerm_postgresql_configuration" "postgresql_config" {

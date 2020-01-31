@@ -32,3 +32,36 @@
         login_password: "{{ administrator_password }}"
         db: "{{ database_name }}"
         query: REVOKE ALL ON SCHEMA public FROM public;
+
+    - name: Create schema with the same name as the database
+      postgresql_schema:
+        login_host: "{{ server_fqdn }}"
+        login_user: "{{ administrator_user }}"
+        login_password: "{{ administrator_password }}"
+        database: "{{ database_name }}"
+        name: "{{ database_name }}"
+
+    - name: Give all privileges to user on tables in schema
+      postgresql_query:
+        login_host: "{{ server_fqdn }}"
+        login_user: "{{ administrator_user }}"
+        login_password: "{{ administrator_password }}"
+        db: "{{ database_name }}"
+        #query: GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA {{ database_name }} TO {{ database_name }}_user;
+        query: ALTER DEFAULT PRIVILEGES IN SCHEMA {{ database_name }} GRANT ALL PRIVILEGES ON TABLES TO {{ database_name }}_user;
+
+    - name: Give all privileges to user on sequences in schema
+      postgresql_query:
+        login_host: "{{ server_fqdn }}"
+        login_user: "{{ administrator_user }}"
+        login_password: "{{ administrator_password }}"
+        db: "{{ database_name }}"
+        query: ALTER DEFAULT PRIVILEGES IN SCHEMA {{ database_name }} GRANT ALL PRIVILEGES ON SEQUENCES TO {{ database_name }}_user;
+
+    - name: Give all privileges to user on functions in schema
+      postgresql_query:
+        login_host: "{{ server_fqdn }}"
+        login_user: "{{ administrator_user }}"
+        login_password: "{{ administrator_password }}"
+        db: "{{ database_name }}"
+        query: ALTER DEFAULT PRIVILEGES IN SCHEMA {{ database_name }} GRANT ALL PRIVILEGES ON FUNCTIONS TO {{ database_name }}_user;
