@@ -51,8 +51,8 @@ variable "administrator_password" {
 }
 
 variable "allowed_cidrs" {
-  type        = list(string)
-  description = "List of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state"
+  type        = map(string)
+  description = "Map of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state"
 }
 
 variable "extra_tags" {
@@ -87,14 +87,14 @@ variable "server_storage_profile" {
 }
 
 variable "postgresql_configurations" {
-  type        = list(map(string))
-  default     = []
-  description = " PostgreSQL configurations to enable"
+  type        = map(string)
+  default     = {}
+  description = "PostgreSQL configurations to enable"
 }
 
 variable "postgresql_version" {
-  type        = number
-  default     = 11
+  type        = string
+  default     = "11"
   description = "Valid values are 9.5, 9.6, 10, 10.0, and 11"
 }
 
@@ -105,9 +105,9 @@ variable "force_ssl" {
 }
 
 variable "vnet_rules" {
-  type        = list(map(string))
+  type        = map(string)
   description = "List of vnet rules to create"
-  default     = []
+  default     = {}
 }
 
 variable "databases_names" {

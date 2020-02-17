@@ -7,7 +7,10 @@ Added
   * AZ-118: Add LICENSE, NOTICE & Github badges
 
 Updated
-  * AZ-45: Revamp module 
+  * AZ-45: Revamp module
+
+Changed
+  * AZ-45: Use for_each instead of count on firewall_rules / postgre_configuration / vnet_rules
 
 # v1.0.0 - 2019-10-18
 

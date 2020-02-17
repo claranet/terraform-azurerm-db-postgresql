@@ -5,17 +5,17 @@ output "postgresql_administrator_login" {
 }
 
 output "postgresql_databases_names" {
-  value       = azurerm_postgresql_database.postgresql_db.*.name
+  value       = azurerm_postgresql_database.postgresql_db[*].name
   description = "List of databases names"
 }
 
 output "postgresql_database_ids" {
   description = "The list of all database resource ids"
-  value       = azurerm_postgresql_database.postgresql_db.*.id
+  value       = azurerm_postgresql_database.postgresql_db[*].id
 }
 
-output "postgresql_firewall_rule_ids" {
-  value       = azurerm_postgresql_firewall_rule.firewall_rules.*.id
+output "postgresql_firewall_rules" {
+  value       = azurerm_postgresql_firewall_rule.firewall_rules
   description = "List of PostgreSQL created rules"
 }
 
@@ -29,14 +29,14 @@ output "postgresql_server_id" {
   description = "PostgreSQL server ID"
 }
 
-output "postgresql_vnet_rule_ids" {
-  value       = azurerm_postgresql_virtual_network_rule.vnet_rules.*.ids
-  description = "The list of all vnet rule resource ids"
+output "postgresql_vnet_rules" {
+  value       = azurerm_postgresql_virtual_network_rule.vnet_rules
+  description = "The list of all vnet rules"
 }
 
-output "postgresql_configuration_id" {
-  value       = azurerm_postgresql_configuration.postgresql_config.*.id
-  description = "The list of all configurations resource ids"
+output "postgresql_configurations" {
+  value       = azurerm_postgresql_configuration.postgresql_config
+  description = "The list of all postgresql configurations set"
 }
 
 output "postgresql_users_passwords" {
