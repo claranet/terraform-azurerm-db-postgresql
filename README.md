@@ -9,6 +9,7 @@ A user is created for each databases created with this module. This module does 
 
 * [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.31
 * [Ansible](https://docs.ansible.com/ansible/latest/index.html) >= 2.4
+* Library [libpq-dev](https://pypi.org/project/libpq-dev/) and PostgreSQL adapter [python-psycopg2](https://pypi.org/project/psycopg2/)
 
 ## Terraform version compatibility
  
