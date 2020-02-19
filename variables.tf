@@ -106,7 +106,7 @@ variable "force_ssl" {
 
 variable "vnet_rules" {
   type        = map(string)
-  description = "List of vnet rules to create"
+  description = "Map of vnet rules to create"
   default     = {}
 }
 

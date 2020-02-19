@@ -35,12 +35,12 @@ resource "azurerm_postgresql_server" "postgresql_server" {
 }
 
 resource "azurerm_postgresql_database" "postgresql_db" {
-  count               = length(var.databases_names)
-  name                = element(var.databases_names, count.index)
+  for_each            = toset(var.databases_names)
+  name                = each.value
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
-  charset             = lookup(var.databases_charset, element(var.databases_names, count.index), "UTF8")
-  collation           = lookup(var.databases_collation, element(var.databases_names, count.index), "en-US")
+  charset             = lookup(var.databases_charset, each.value, "UTF8")
+  collation           = lookup(var.databases_collation, each.value, "en-US")
 }
 
 resource "azurerm_postgresql_configuration" "postgresql_config" {
