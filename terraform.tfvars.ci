@@ -1,10 +1,11 @@
 location="fr-central"
 location_short="frc"
-client_name="test"
 environment="test"
 stack="ci"
-
+client_name="test"
 resource_group_name="rg-test"
-
-administrator_login="admin"
-administrator_password="pwd"
+allowed_ip_addresses=["192.168.0.0/24", "192.168.1.0/24"]
+administrator_password="test"
+administrator_login="test"
+databases_names=["test"]
+extra_tags= {"test" = "ci"}

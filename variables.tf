@@ -1,129 +1,158 @@
 variable "client_name" {
-  description = "Client name/account used in naming"
+  description = "Name of client"
+  type        = string
 }
 
 variable "environment" {
-  description = "Project environment"
+  description = "Name of application's environnement"
+  type        = string
 }
 
 variable "stack" {
-  description = "Project stack name"
+  description = "Name of application stack"
+  type        = string
 }
 
 variable "resource_group_name" {
-  description = "The name of the resource group in which to create the PostgreSQL Server. Changing this forces a new resource to be created."
+  description = "Name of the application ressource group, herited from infra module"
+  type        = string
 }
 
 variable "location" {
-  description = "Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created."
+  description = "Azure location for Key Vault."
+  type        = string
 }
 
 variable "location_short" {
-  description = "Short version of the Azure location, used by naming convention."
+  description = "Short string for Azure location."
+  type        = string
 }
 
-variable "server_name" {
-  description = "Specifies the name of the PostgreSQL Server. Changing this forces a new resource to be created."
+variable "name_prefix" {
+  description = "Optional prefix for PostgreSQL server name"
+  type        = string
   default     = ""
 }
 
-variable "sku_name" {
-  description = "Specifies the SKU Name for this PostgreSQL Server. The name of the SKU, follows the tier + family + cores pattern (e.g. B_Gen4_1, GP_Gen5_8)."
-  default     = "GP_Gen5_2"
-}
-
-variable "sku_capacity" {
-  description = "The scale up/out capacity, representing server's compute units"
-  default     = "2"
-}
-
-variable "sku_tier" {
-  description = "The tier of the particular SKU. Possible values are Basic, GeneralPurpose, and MemoryOptimized."
-  default     = "GeneralPurpose"
-}
-
-variable "sku_family" {
-  description = " The family of hardware Gen4 or Gen5."
-  default     = "Gen5"
-}
-
-variable "storage_mb" {
-  description = "Max storage allowed for a server. Possible values are between 5120 MB(5GB) and 1048576 MB(1TB) for the Basic SKU and between 5120 MB(5GB) and 4194304 MB(4TB) for General Purpose/Memory Optimized SKUs."
-  default     = 5120
-}
-
-variable "backup_retention_days" {
-  description = "Backup retention days for the server, supported values are between 7 and 35 days."
-  default     = 7
-}
-
-variable "geo_redundant_backup" {
-  description = "Enable Geo-redundant or not for server backup. Valid values for this property are Enabled or Disabled, not supported for the basic tier."
-  default     = "Disabled"
+variable "custom_server_name" {
+  type        = string
+  description = "Custom Server Name identifier"
+  default     = ""
 }
 
 variable "administrator_login" {
-  description = "The Administrator Login for the PostgreSQL Server. Changing this forces a new resource to be created."
-  default     = "claranet"
+  description = "PostgreSQL administrator login"
+  type        = string
 }
 
 variable "administrator_password" {
-  description = "The Password associated with the administrator_login for the PostgreSQL Server."
+  description = "PostgreSQL administrator password. Strong Password : https://docs.microsoft.com/en-us/sql/relational-databases/security/strong-passwords?view=sql-server-2017"
+  type        = string
 }
 
-variable "server_version" {
-  description = "Specifies the version of PostgreSQL to use. Valid values are 9.5, 9.6, and 10.0. Changing this forces a new resource to be created."
-  default     = "10.0"
+variable "allowed_cidrs" {
+  type        = list(string)
+  description = "List of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state"
 }
 
-variable "ssl_enforcement" {
-  description = "Specifies if SSL should be enforced on connections. Possible values are Enabled and Disabled."
-  default     = "Enabled"
-}
-
-variable "db_names" {
-  description = "The list of names of the PostgreSQL Database, which needs to be a valid PostgreSQL identifier. Changing this forces a new resource to be created."
-  default     = []
-}
-
-variable "db_charset" {
-  description = "Specifies the Charset for the PostgreSQL Database, which needs to be a valid PostgreSQL Charset. Changing this forces a new resource to be created."
-  default     = "UTF8"
-}
-
-variable "db_collation" {
-  description = "Specifies the Collation for the PostgreSQL Database, which needs to be a valid PostgreSQL Collation. Changing this forces a new resource to be created."
-  default     = "English_United States.1252"
-}
-
-variable "firewall_rule_prefix" {
-  description = "Specifies prefix for firewall rule names."
-  default     = "firewall-"
-}
-
-variable "firewall_rules" {
-  description = "The list of maps, describing firewall rules. Valid map items: name, start_ip, end_ip."
-  default     = []
-}
-
-variable "vnet_rule_name_prefix" {
-  description = "Specifies prefix for vnet rule names."
-  default     = "postgresql-vnet-rule-"
-}
-
-variable "vnet_rules" {
-  description = "The list of maps, describing vnet rules. Valud map items: name, subnet_id."
-  default     = []
-}
-
-variable "tags" {
-  description = "A map of tags to set on every resources. Empty by default."
-  type        = "map"
+variable "extra_tags" {
+  type        = map(string)
+  description = "Map of custom tags"
   default     = {}
+}
+
+variable "tier" {
+  type        = string
+  description = "Tier for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#tier Possible values are: GeneralPurpose, Basic, MemoryOptimized"
+  default     = "GeneralPurpose"
+}
+
+variable "capacity" {
+  type        = number
+  description = "Capacity for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#capacity"
+  default     = 4
+}
+
+variable "server_storage_profile" {
+  type = map(string)
+
+  default = {
+    storage_mb            = 5120
+    backup_retention_days = 10
+    geo_redundant_backup  = "Enabled"
+    auto_grow             = "Disabled"
+  }
+
+  description = "Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#storage_profile"
 }
 
 variable "postgresql_configurations" {
-  description = "A map with PostgreSQL configurations to enable."
-  type        = "map"
+  type        = list(map(string))
+  default     = []
+  description = " PostgreSQL configurations to enable"
+}
+
+variable "postgresql_version" {
+  type        = number
+  default     = 11
+  description = "Valid values are 9.5, 9.6, 10, 10.0, and 11"
+}
+
+variable "force_ssl" {
+  type        = bool
+  default     = true
+  description = "Force usage of SSL"
+}
+
+variable "vnet_rules" {
+  type        = list(map(string))
+  description = "List of vnet rules to create"
+  default     = []
+}
+
+variable "databases_names" {
+  description = "List of databases names"
+  type        = list(string)
+}
+
+variable "databases_charset" {
+  type        = map(string)
+  description = "Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE"
   default     = {}
+}
+
+variable "databases_collation" {
+  type        = map(string)
+  description = "Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN"
+  default     = {}
+}
+
+variable "enable_logs_to_storage" {
+  description = "Boolean flag to specify whether the logs should be sent to the Storage Account"
+  type        = bool
+  default     = false
+}
+
+variable "enable_logs_to_log_analytics" {
+  description = "Boolean flag to specify whether the logs should be sent to Log Analytics"
+  type        = bool
+  default     = false
+}
+
+variable "logs_storage_retention" {
+  description = "Retention in days for logs on Storage Account"
+  type        = number
+  default     = 30
+}
+
+variable "logs_storage_account_id" {
+  description = "Storage Account id for logs"
+  type        = string
+  default     = ""
+}
+
+variable "logs_log_analytics_workspace_id" {
+  description = "Log Analytics Workspace id for logs"
+  type        = string
+  default     = ""
 }
