@@ -6,12 +6,7 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  sku {
-    name     = join("_", [lookup(local.tier_map, var.tier, "GeneralPurpose"), "Gen5", var.capacity])
-    capacity = var.capacity
-    tier     = var.tier
-    family   = "Gen5"
-  }
+  sku_name = join("_", [lookup(local.tier_map, var.tier, "GeneralPurpose"), "Gen5", var.capacity])
 
   storage_profile {
     storage_mb            = lookup(var.server_storage_profile, "storage_mb", null)
