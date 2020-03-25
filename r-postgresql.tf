@@ -6,12 +6,7 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  sku {
-    name     = join("_", [lookup(local.tier_map, var.tier, "GeneralPurpose"), "Gen5", var.capacity])
-    capacity = var.capacity
-    tier     = var.tier
-    family   = "Gen5"
-  }
+  sku_name = join("_", [lookup(local.tier_map, var.tier, "GeneralPurpose"), "Gen5", var.capacity])
 
   storage_profile {
     storage_mb            = lookup(var.server_storage_profile, "storage_mb", null)
@@ -35,18 +30,18 @@ resource "azurerm_postgresql_server" "postgresql_server" {
 }
 
 resource "azurerm_postgresql_database" "postgresql_db" {
-  count               = length(var.databases_names)
-  name                = element(var.databases_names, count.index)
+  for_each            = toset(var.databases_names)
+  name                = each.value
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
-  charset             = lookup(var.databases_charset, element(var.databases_names, count.index), "UTF8")
-  collation           = lookup(var.databases_collation, element(var.databases_names, count.index), "en-US")
+  charset             = lookup(var.databases_charset, each.value, "UTF8")
+  collation           = lookup(var.databases_collation, each.value, "en-US")
 }
 
 resource "azurerm_postgresql_configuration" "postgresql_config" {
-  count               = length(var.postgresql_configurations)
-  name                = var.postgresql_configurations[count.index].name
+  for_each            = var.postgresql_configurations
+  name                = each.key
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
-  value               = var.postgresql_configurations[count.index].value
+  value               = each.value
 }
