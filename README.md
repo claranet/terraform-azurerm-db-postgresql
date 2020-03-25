@@ -3,10 +3,13 @@
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/db-postgresql/azurerm/)
 
 This module creates an [Azure PostgreSQL server](https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html) with [databases](https://www.terraform.io/docs/providers/azurerm/r/postgresql_database.html) along with logging activated and [firewall rules](https://www.terraform.io/docs/providers/azurerm/r/postgresql_firewall_rule.html) and [virtual network rules](https://www.terraform.io/docs/providers/azurerm/r/postgresql_virtual_network_rule.html).
+A user is created for each databases created with this module. This module does not allow users to create new objects in the public schema regarding the [CVE-2018-1058](https://wiki.postgresql.org/wiki/A_Guide_to_CVE-2018-1058%3A_Protect_Your_Search_Path#Do_not_allow_users_to_create_new_objects_in_the_public_schema).
 
 ## Requirements
 
 * [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.31
+* [Ansible](https://docs.ansible.com/ansible/latest/index.html) >= 2.4
+* Library [libpq-dev](https://pypi.org/project/libpq-dev/) and PostgreSQL adapter [python-psycopg2](https://pypi.org/project/psycopg2/)
 
 ## Terraform version compatibility
  
@@ -84,6 +87,7 @@ module "postgresql" {
 | allowed\_cidrs | List of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state | list(string) | n/a | yes |
 | capacity | Capacity for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#capacity | number | `"4"` | no |
 | client\_name | Name of client | string | n/a | yes |
+| create\_databases\_users | True to create a user named <db>\_user per database with generated password and role db\_owner. | bool | `"true"` | no |
 | custom\_server\_name | Custom Server Name identifier | string | `""` | no |
 | databases\_charset | Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE | map(string) | `{}` | no |
 | databases\_collation | Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN | map(string) | `{}` | no |
@@ -118,6 +122,7 @@ module "postgresql" {
 | postgresql\_firewall\_rule\_ids | List of PostgreSQL created rules |
 | postgresql\_fqdn | FQDN of the PostgreSQL server |
 | postgresql\_server\_id | PostgreSQL server ID |
+| postgresql\_users\_passwords | List of passwords for databases users |
 | postgresql\_vnet\_rule\_ids | The list of all vnet rule resource ids |
 
 ## Related documentation
