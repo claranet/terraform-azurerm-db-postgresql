@@ -1,4 +1,4 @@
-# v2.0.0 - Unreleased
+# v2.0.0 - 2020-03-25
 
 Breaking
   * AZ-94 Terraform 0.12 / HCL2 format
@@ -10,7 +10,7 @@ Updated
   * AZ-45: Revamp module
 
 Changed
-  * AZ-45: Use for_each instead of count on resources
+  * AZ-45: Use `for_each` instead of `count` on resources
 
 # v1.0.0 - 2019-10-18
 
