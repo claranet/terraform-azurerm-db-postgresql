@@ -7,16 +7,16 @@ A user is created for each databases created with this module. This module does 
 
 ## Requirements
 
-* [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.31
 * [Ansible](https://docs.ansible.com/ansible/latest/index.html) >= 2.4
 * Library [libpq-dev](https://pypi.org/project/libpq-dev/) and PostgreSQL adapter [python-psycopg2](https://pypi.org/project/psycopg2/)
 
-## Terraform version compatibility
- 
-| Module version | Terraform version |
-|----------------|-------------------|
-| >= 2.x.x       | 0.12.x            |
-| < 2.x.x        | 0.11.x            |
+## Version compatibility
+
+| Module version    | Terraform version | AzureRM version |
+|-------------------|-------------------|-----------------|
+| >= 3.x.x          | 0.12.x            | >= 2.0          |
+| >= 2.x.x, < 3.x.x | 0.12.x            | <  2.0          |
+| <  2.x.x          | 0.11.x            | <  2.0          |
 
 ## Usage
 
@@ -81,8 +81,8 @@ module "postgresql" {
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
-| administrator\_login | PostgreSQL administrator login | `string` | n/a | yes | 
+|------|-------------|------|---------|:--------:|
+| administrator\_login | PostgreSQL administrator login | `string` | n/a | yes |
 | administrator\_password | PostgreSQL administrator password. Strong Password : https://docs.microsoft.com/en-us/sql/relational-databases/security/strong-passwords?view=sql-server-2017 | `string` | n/a | yes |
 | allowed\_cidrs | Map of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state | `map(string)` | n/a | yes |
 | capacity | Capacity for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#capacity | `number` | `4` | no |
@@ -92,7 +92,7 @@ module "postgresql" {
 | databases\_charset | Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE | `map(string)` | `{}` | no |
 | databases\_collation | Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN | `map(string)` | `{}` | no |
 | databases\_names | List of databases names | `list(string)` | n/a | yes |
-| enable\_logs\_to\_log\_analytics | Boolean flag to specify whether the logs should be sent to Log Analytics | `bool` | `false` | no | 
+| enable\_logs\_to\_log\_analytics | Boolean flag to specify whether the logs should be sent to Log Analytics | `bool` | `false` | no |
 | enable\_logs\_to\_storage | Boolean flag to specify whether the logs should be sent to the Storage Account | `bool` | `false` | no |
 | environment | Name of application's environnement | `string` | n/a | yes |
 | extra\_tags | Map of custom tags | `map(string)` | `{}` | no |
@@ -101,7 +101,7 @@ module "postgresql" {
 | location\_short | Short string for Azure location. | `string` | n/a | yes |
 | logs\_log\_analytics\_workspace\_id | Log Analytics Workspace id for logs | `string` | `""` | no |
 | logs\_storage\_account\_id | Storage Account id for logs | `string` | `""` | no |
-| logs\_storage\_retention | Retention in days for logs on Storage Account | `number` | `30` | no | 
+| logs\_storage\_retention | Retention in days for logs on Storage Account | `number` | `30` | no |
 | name\_prefix | Optional prefix for PostgreSQL server name | `string` | `""` | no |
 | postgresql\_configurations | PostgreSQL configurations to enable | `map(string)` | `{}` | no |
 | postgresql\_version | Valid values are 9.5, 9.6, 10, 10.0, and 11 | `string` | `"11"` | no |
@@ -109,7 +109,7 @@ module "postgresql" {
 | server\_storage\_profile | Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#storage_profile | `map(string)` | <pre>{<br>  "auto_grow": "Disabled",<br>  "backup_retention_days": 10,<br>  "geo_redundant_backup": "Enabled",<br>  "storage_mb": 5120<br>}</pre> | no |
 | stack | Name of application stack | `string` | n/a | yes |
 | tier | Tier for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#tier Possible values are: GeneralPurpose, Basic, MemoryOptimized | `string` | `"GeneralPurpose"` | no |
-| vnet\_rules | Map of vnet rules to create | `map(string)` | `{}` | no | 
+| vnet\_rules | Map of vnet rules to create | `map(string)` | `{}` | no |
 
 ## Outputs
 
@@ -119,7 +119,7 @@ module "postgresql" {
 | postgresql\_configurations | The map of all postgresql configurations set |
 | postgresql\_database\_ids | The map of all database resource ids |
 | postgresql\_databases\_names | Map of databases names |
-| postgresql\_firewall\_rules | Map of PostgreSQL created rules | 
+| postgresql\_firewall\_rules | Map of PostgreSQL created rules |
 | postgresql\_fqdn | FQDN of the PostgreSQL server |
 | postgresql\_server\_id | PostgreSQL server ID |
 | postgresql\_users\_passwords | Map of passwords for databases users |

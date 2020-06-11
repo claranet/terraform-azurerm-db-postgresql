@@ -1,3 +1,3 @@
 provider "azurerm" {
-  version = ">= 1.31.0, < 2.0"
+  version = ">= 1.41.0, < 2.0"
 }
