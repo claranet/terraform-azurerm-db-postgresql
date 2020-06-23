@@ -56,7 +56,10 @@ module "postgresql" {
   tier     = "GeneralPurpose"
   capacity = 4
 
-  allowed_cidrs = ["10.0.0.0/24", "12.34.56.78/32"]
+  allowed_cidrs = {
+    "1" = "10.0.0.0/24"
+    "2" = "12.34.56.78/32"
+  }
 
   
   storage_mb                    = 5120
@@ -70,7 +73,7 @@ module "postgresql" {
   force_ssl = true
 
   databases_names     = ["mydatabase"]
-  databases_collation = { mydatabase = "en_US" }
+  databases_collation = { mydatabase = "en-US" }
   databases_charset   = { mydatabase = "UTF8" }
 
   extra_tags = var.extra_tags
