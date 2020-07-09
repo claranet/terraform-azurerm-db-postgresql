@@ -1,4 +1,4 @@
-# v2.1.0 - Unreleased
+# v2.1.0 - 2020-07-09
 
 Breaking
   * AZ-206: Pin and fix minimal version of AzureRM provider under 2.0
