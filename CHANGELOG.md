@@ -1,7 +1,12 @@
+# v2.1.0 - Unreleased
+
+Breaking
+  * AZ-206: Pin and fix minimal version of AzureRM provider under 2.0
+
 # v2.0.0 - 2020-03-25
 
 Breaking
-  * AZ-94 Terraform 0.12 / HCL2 format
+  * AZ-94: Terraform 0.12 / HCL2 format
 
 Added
   * AZ-118: Add LICENSE, NOTICE & Github badges
