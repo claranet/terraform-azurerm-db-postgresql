@@ -73,17 +73,28 @@ variable "capacity" {
   default     = 4
 }
 
-variable "server_storage_profile" {
-  type = map(string)
+variable "auto_grow_enabled" {
+  description = "Enable/Disable auto-growing of the storage."
+  type        = bool
+  default     = false
+}
 
-  default = {
-    storage_mb            = 5120
-    backup_retention_days = 10
-    geo_redundant_backup  = "Enabled"
-    auto_grow             = "Disabled"
-  }
+variable "storage_mb" {
+  description = "Max storage allowed for a server. Possible values are between 5120 MB(5GB) and 1048576 MB(1TB) for the Basic SKU and between 5120 MB(5GB) and 4194304 MB(4TB) for General Purpose/Memory Optimized SKUs."
+  type        = number
+  default     = 5120
+}
 
-  description = "Storage configuration : https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html#storage_profile"
+variable "backup_retention_days" {
+  description = "Backup retention days for the server, supported values are between 7 and 35 days."
+  type        = number
+  default     = 10
+}
+
+variable "geo_redundant_backup_enabled" {
+  description = "Turn Geo-redundant server backups on/off. Not available for the Basic tier."
+  type        = bool
+  default     = true
 }
 
 variable "postgresql_configurations" {
