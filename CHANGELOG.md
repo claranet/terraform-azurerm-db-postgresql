@@ -1,4 +1,4 @@
-# v3.0.0 - Unreleased
+# v3.0.0 - 2020-07-27
 
 Breaking
   * AZ-198: Upgrade for compatibility AzureRM 2.0
