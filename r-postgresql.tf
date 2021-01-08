@@ -1,8 +1,5 @@
 resource "azurerm_postgresql_server" "postgresql_server" {
-  name = coalesce(
-    var.custom_server_name,
-    local.default_name_server,
-  )
+  name                = local.postgresql_server_name
   location            = var.location
   resource_group_name = var.resource_group_name
 
