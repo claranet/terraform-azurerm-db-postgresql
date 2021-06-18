@@ -90,7 +90,7 @@ module "postgresql" {
 | allowed\_cidrs | Map of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state | `map(string)` | n/a | yes |
 | auto\_grow\_enabled | Enable/Disable auto-growing of the storage. | `bool` | `false` | no |
 | backup\_retention\_days | Backup retention days for the server, supported values are between 7 and 35 days. | `number` | `10` | no |
-| capacity | Capacity for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#capacity | `number` | `4` | no |
+| capacity | Capacity for PostgreSQL server sku - number of vCores : https://docs.microsoft.com/en-us/azure/postgresql/concepts-pricing-tiers | `number` | `4` | no |
 | client\_name | Name of client | `string` | n/a | yes |
 | create\_databases\_users | True to create a user named <db>\_user per database with generated password and role db\_owner. | `bool` | `true` | no |
 | custom\_server\_name | Custom Server Name identifier | `string` | `""` | no |
@@ -114,7 +114,7 @@ module "postgresql" {
 | resource\_group\_name | Name of the application ressource group, herited from infra module | `string` | n/a | yes |
 | stack | Name of application stack | `string` | n/a | yes |
 | storage\_mb | Max storage allowed for a server. Possible values are between 5120 MB(5GB) and 1048576 MB(1TB) for the Basic SKU and between 5120 MB(5GB) and 4194304 MB(4TB) for General Purpose/Memory Optimized SKUs. | `number` | `5120` | no |
-| tier | Tier for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#tier Possible values are: GeneralPurpose, Basic, MemoryOptimized | `string` | `"GeneralPurpose"` | no |
+| tier | Tier for PostgreSQL server sku : https://docs.microsoft.com/en-us/azure/postgresql/concepts-pricing-tiers Possible values are: GeneralPurpose, Basic, MemoryOptimized | `string` | `"GeneralPurpose"` | no |
 | vnet\_rules | Map of vnet rules to create | `map(string)` | `{}` | no |
 
 ## Outputs
@@ -143,4 +143,4 @@ Terraform Azure PostgreSQL Firewall documentation: [www.terraform.io/docs/provid
 
 Terraform Azure PostgreSQL Configuration documentation: [www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.htmlhttps://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.html](https://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.htmlhttps://www.terraform.io/docs/providers/azurerm/r/postgresql_configuration.html)
 
-Microsoft Azure documentation: [docs.microsoft.com/fr-fr/azure/postgresql/overview](https://docs.microsoft.com/fr-fr/azure/postgresql/overview)
+Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/postgresql/overview](https://docs.microsoft.com/en-us/azure/postgresql/overview)
