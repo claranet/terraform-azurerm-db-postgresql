@@ -63,13 +63,13 @@ variable "extra_tags" {
 
 variable "tier" {
   type        = string
-  description = "Tier for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#tier Possible values are: GeneralPurpose, Basic, MemoryOptimized"
+  description = "Tier for PostgreSQL server sku : https://docs.microsoft.com/en-us/azure/postgresql/concepts-pricing-tiers Possible values are: GeneralPurpose, Basic, MemoryOptimized"
   default     = "GeneralPurpose"
 }
 
 variable "capacity" {
   type        = number
-  description = "Capacity for MySQL server sku : https://www.terraform.io/docs/providers/azurerm/r/mysql_server.html#capacity"
+  description = "Capacity for PostgreSQL server sku - number of vCores : https://docs.microsoft.com/en-us/azure/postgresql/concepts-pricing-tiers"
   default     = 4
 }
 
