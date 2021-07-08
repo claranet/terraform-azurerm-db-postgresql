@@ -14,7 +14,7 @@ A user is created for each databases created with this module. This module does 
 
 | Module version | Terraform version | AzureRM version |
 |----------------|-------------------| --------------- |
-| >= 4.x.x       | 0.13.x            | >= 2.0          |
+| >= 4.x.x       | 0.13.x            | >= 2.7          |
 | >= 3.x.x       | 0.12.x            | >= 2.0          |
 | >= 2.x.x       | 0.12.x            | < 2.0           |
 | <  2.x.x       | 0.11.x            | < 2.0           |
@@ -80,6 +80,14 @@ module "postgresql" {
   extra_tags = var.extra_tags
 }
 ```
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| azurerm | >= 2.7 |
+| null | n/a |
+| random | n/a |
 
 ## Inputs
 
