@@ -1,4 +1,4 @@
-# Unreleased
+# v4.0.2 - 2021-07-21
 
 Fixed
   * AZ-529: Fix AzureRM minimum version required
