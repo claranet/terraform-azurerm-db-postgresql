@@ -167,3 +167,9 @@ variable "create_databases_users" {
   type        = bool
   default     = true
 }
+
+variable "ssl_minimal_tls_version_enforced" {
+  type        = string
+  default     = null
+  description = "The mimimun TLS version to support on the sever"
+}

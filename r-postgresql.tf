@@ -15,6 +15,8 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   version                      = var.postgresql_version
   ssl_enforcement_enabled      = var.force_ssl
 
+  ssl_minimal_tls_version_enforced = var.ssl_minimal_tls_version_enforced
+
   tags = merge(
     local.default_tags,
     var.extra_tags,
