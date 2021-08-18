@@ -13,7 +13,7 @@ A user is created for each databases created with this module. This module does 
 ## Version compatibility
 
 | Module version | Terraform version | AzureRM version |
-|----------------|-------------------| --------------- |
+| -------------- | ----------------- | --------------- |
 | >= 4.x.x       | 0.13.x            | >= 2.7          |
 | >= 3.x.x       | 0.12.x            | >= 2.0          |
 | >= 2.x.x       | 0.12.x            | < 2.0           |
@@ -83,61 +83,61 @@ module "postgresql" {
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| azurerm | >= 2.7 |
-| null | n/a |
-| random | n/a |
+| Name    | Version |
+| ------- | ------- |
+| azurerm | >= 2.7  |
+| null    | >= 3.0  |
+| random  | >= 3.0  |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| administrator\_login | PostgreSQL administrator login | `string` | n/a | yes |
-| administrator\_password | PostgreSQL administrator password. Strong Password : https://docs.microsoft.com/en-us/sql/relational-databases/security/strong-passwords?view=sql-server-2017 | `string` | n/a | yes |
-| allowed\_cidrs | Map of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state | `map(string)` | n/a | yes |
-| auto\_grow\_enabled | Enable/Disable auto-growing of the storage. | `bool` | `false` | no |
-| backup\_retention\_days | Backup retention days for the server, supported values are between 7 and 35 days. | `number` | `10` | no |
-| capacity | Capacity for PostgreSQL server sku - number of vCores : https://docs.microsoft.com/en-us/azure/postgresql/concepts-pricing-tiers | `number` | `4` | no |
-| client\_name | Name of client | `string` | n/a | yes |
-| create\_databases\_users | True to create a user named <db>\_user per database with generated password and role db\_owner. | `bool` | `true` | no |
-| custom\_server\_name | Custom Server Name identifier | `string` | `""` | no |
-| databases\_charset | Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE | `map(string)` | `{}` | no |
-| databases\_collation | Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN | `map(string)` | `{}` | no |
-| databases\_names | List of databases names | `list(string)` | n/a | yes |
-| enable\_logs\_to\_log\_analytics | Boolean flag to specify whether the logs should be sent to Log Analytics | `bool` | `false` | no |
-| enable\_logs\_to\_storage | Boolean flag to specify whether the logs should be sent to the Storage Account | `bool` | `false` | no |
-| environment | Name of application's environnement | `string` | n/a | yes |
-| extra\_tags | Map of custom tags | `map(string)` | `{}` | no |
-| force\_ssl | Force usage of SSL | `bool` | `true` | no |
-| geo\_redundant\_backup\_enabled | Turn Geo-redundant server backups on/off. Not available for the Basic tier. | `bool` | `true` | no |
-| location | Azure location for Key Vault. | `string` | n/a | yes |
-| location\_short | Short string for Azure location. | `string` | n/a | yes |
-| logs\_log\_analytics\_workspace\_id | Log Analytics Workspace id for logs | `string` | `""` | no |
-| logs\_storage\_account\_id | Storage Account id for logs | `string` | `""` | no |
-| logs\_storage\_retention | Retention in days for logs on Storage Account | `number` | `30` | no |
-| name\_prefix | Optional prefix for PostgreSQL server name | `string` | `""` | no |
-| postgresql\_configurations | PostgreSQL configurations to enable | `map(string)` | `{}` | no |
-| postgresql\_version | Valid values are 9.5, 9.6, 10, 10.0, and 11 | `string` | `"11"` | no |
-| resource\_group\_name | Name of the application ressource group, herited from infra module | `string` | n/a | yes |
-| stack | Name of application stack | `string` | n/a | yes |
-| storage\_mb | Max storage allowed for a server. Possible values are between 5120 MB(5GB) and 1048576 MB(1TB) for the Basic SKU and between 5120 MB(5GB) and 4194304 MB(4TB) for General Purpose/Memory Optimized SKUs. | `number` | `5120` | no |
-| tier | Tier for PostgreSQL server sku : https://docs.microsoft.com/en-us/azure/postgresql/concepts-pricing-tiers Possible values are: GeneralPurpose, Basic, MemoryOptimized | `string` | `"GeneralPurpose"` | no |
-| vnet\_rules | Map of vnet rules to create | `map(string)` | `{}` | no |
+| Name                                 | Description                                                                                                                                                                                              | Type           | Default            | Required |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------ | :------: |
+| administrator\_login                 | PostgreSQL administrator login                                                                                                                                                                           | `string`       | n/a                |   yes    |
+| administrator\_password              | PostgreSQL administrator password. Strong Password : https://docs.microsoft.com/en-us/sql/relational-databases/security/strong-passwords?view=sql-server-2017                                            | `string`       | n/a                |   yes    |
+| allowed\_cidrs                       | Map of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state                                                                                        | `map(string)`  | n/a                |   yes    |
+| auto\_grow\_enabled                  | Enable/Disable auto-growing of the storage.                                                                                                                                                              | `bool`         | `false`            |    no    |
+| backup\_retention\_days              | Backup retention days for the server, supported values are between 7 and 35 days.                                                                                                                        | `number`       | `10`               |    no    |
+| capacity                             | Capacity for PostgreSQL server sku - number of vCores : https://docs.microsoft.com/en-us/azure/postgresql/concepts-pricing-tiers                                                                         | `number`       | `4`                |    no    |
+| client\_name                         | Name of client                                                                                                                                                                                           | `string`       | n/a                |   yes    |
+| create\_databases\_users             | True to create a user named <db>\_user per database with generated password and role db\_owner.                                                                                                          | `bool`         | `true`             |    no    |
+| custom\_server\_name                 | Custom Server Name identifier                                                                                                                                                                            | `string`       | `""`               |    no    |
+| databases\_charset                   | Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE                                                                                                          | `map(string)`  | `{}`               |    no    |
+| databases\_collation                 | Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN                    | `map(string)`  | `{}`               |    no    |
+| databases\_names                     | List of databases names                                                                                                                                                                                  | `list(string)` | n/a                |   yes    |
+| enable\_logs\_to\_log\_analytics     | Boolean flag to specify whether the logs should be sent to Log Analytics                                                                                                                                 | `bool`         | `false`            |    no    |
+| enable\_logs\_to\_storage            | Boolean flag to specify whether the logs should be sent to the Storage Account                                                                                                                           | `bool`         | `false`            |    no    |
+| environment                          | Name of application's environnement                                                                                                                                                                      | `string`       | n/a                |   yes    |
+| extra\_tags                          | Map of custom tags                                                                                                                                                                                       | `map(string)`  | `{}`               |    no    |
+| force\_ssl                           | Force usage of SSL                                                                                                                                                                                       | `bool`         | `true`             |    no    |
+| geo\_redundant\_backup\_enabled      | Turn Geo-redundant server backups on/off. Not available for the Basic tier.                                                                                                                              | `bool`         | `true`             |    no    |
+| location                             | Azure location for Key Vault.                                                                                                                                                                            | `string`       | n/a                |   yes    |
+| location\_short                      | Short string for Azure location.                                                                                                                                                                         | `string`       | n/a                |   yes    |
+| logs\_log\_analytics\_workspace\_id  | Log Analytics Workspace id for logs                                                                                                                                                                      | `string`       | `""`               |    no    |
+| logs\_storage\_account\_id           | Storage Account id for logs                                                                                                                                                                              | `string`       | `""`               |    no    |
+| name\_prefix                         | Optional prefix for PostgreSQL server name                                                                                                                                                               | `string`       | `""`               |    no    |
+| postgresql\_configurations           | PostgreSQL configurations to enable                                                                                                                                                                      | `map(string)`  | `{}`               |    no    |
+| postgresql\_version                  | Valid values are 9.5, 9.6, 10, 10.0, and 11                                                                                                                                                              | `string`       | `"11"`             |    no    |
+| resource\_group\_name                | Name of the application ressource group, herited from infra module                                                                                                                                       | `string`       | n/a                |   yes    |
+| ssl\_minimal\_tls\_version\_enforced | The mimimun TLS version to support on the sever                                                                                                                                                          | `string`       | `null`             |    no    |
+| stack                                | Name of application stack                                                                                                                                                                                | `string`       | n/a                |   yes    |
+| storage\_mb                          | Max storage allowed for a server. Possible values are between 5120 MB(5GB) and 1048576 MB(1TB) for the Basic SKU and between 5120 MB(5GB) and 4194304 MB(4TB) for General Purpose/Memory Optimized SKUs. | `number`       | `5120`             |    no    |
+| tier                                 | Tier for PostgreSQL server sku : https://docs.microsoft.com/en-us/azure/postgresql/concepts-pricing-tiers Possible values are: GeneralPurpose, Basic, MemoryOptimized                                    | `string`       | `"GeneralPurpose"` |    no    |
+| vnet\_rules                          | Map of vnet rules to create                                                                                                                                                                              | `map(string)`  | `{}`               |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| postgresql\_administrator\_login | Administrator login for PostgreSQL server |
-| postgresql\_configurations | The map of all postgresql configurations set |
-| postgresql\_database\_ids | The map of all database resource ids |
-| postgresql\_databases\_names | Map of databases names |
-| postgresql\_firewall\_rules | Map of PostgreSQL created rules |
-| postgresql\_fqdn | FQDN of the PostgreSQL server |
-| postgresql\_server\_id | PostgreSQL server ID |
-| postgresql\_users\_passwords | Map of passwords for databases users |
-| postgresql\_vnet\_rules | The map of all vnet rules |
+| Name                             | Description                                  |
+| -------------------------------- | -------------------------------------------- |
+| postgresql\_administrator\_login | Administrator login for PostgreSQL server    |
+| postgresql\_configurations       | The map of all postgresql configurations set |
+| postgresql\_database\_ids        | The map of all database resource ids         |
+| postgresql\_databases\_names     | Map of databases names                       |
+| postgresql\_firewall\_rules      | Map of PostgreSQL created rules              |
+| postgresql\_fqdn                 | FQDN of the PostgreSQL server                |
+| postgresql\_server\_id           | PostgreSQL server ID                         |
+| postgresql\_users\_passwords     | Map of passwords for databases users         |
+| postgresql\_vnet\_rules          | The map of all vnet rules                    |
 
 ## Related documentation
 

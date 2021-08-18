@@ -1,5 +1,8 @@
 # v4 unreleased
 
+Added
+  * AZ-544: Add `ssl_minimal_tls_version_enforce` parameter
+
 Fixed
   * AZ-530: Cleanup module and fix linter errors
 
