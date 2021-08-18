@@ -1,3 +1,8 @@
+# v4 unreleased
+
+Fixed
+  * AZ-530: Cleanup module and fix linter errors
+
 # v4.0.2 - 2021-07-21
 
 Fixed
