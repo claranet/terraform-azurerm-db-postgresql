@@ -16,10 +16,7 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   ssl_enforcement_enabled      = var.force_ssl
 
   tags = merge(
-    {
-      "env"   = var.environment
-      "stack" = var.stack
-    },
+    local.default_tags,
     var.extra_tags,
   )
 }
