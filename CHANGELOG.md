@@ -1,4 +1,4 @@
-# v4 unreleased
+# v4.1.0 - 2021-08-18
 
 Added
   * AZ-544: Add `ssl_minimal_tls_version_enforce` parameter
