@@ -10,12 +10,13 @@ A user is created for each databases created with this module. This module does 
 * [Ansible](https://docs.ansible.com/ansible/latest/index.html) >= 2.4
 * Library [libpq-dev](https://pypi.org/project/libpq-dev/) and PostgreSQL adapter [python-psycopg2](https://pypi.org/project/psycopg2/)
 
-## Version compatibility
+<!-- BEGIN_TF_DOCS -->
+## Global versionning rule for Claranet Azure modules
 
 | Module version | Terraform version | AzureRM version |
 | -------------- | ----------------- | --------------- |
-| >= 5.x.x       | 0.15.x & 1.0.x    | >= 2.7          |
-| >= 4.x.x       | 0.13.x            | >= 2.7          |
+| >= 5.x.x       | 0.15.x & 1.0.x    | >= 2.0          |
+| >= 4.x.x       | 0.13.x            | >= 2.0          |
 | >= 3.x.x       | 0.12.x            | >= 2.0          |
 | >= 2.x.x       | 0.12.x            | < 2.0           |
 | <  2.x.x       | 0.11.x            | < 2.0           |
@@ -27,7 +28,7 @@ which set some terraform variables in the environment needed by this module.
 More details about variables set by the `terraform-wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
 
 ```hcl
-module "azure-region" {
+module "azure_region" {
   source  = "claranet/regions/azurerm"
   version = "x.x.x"
 
@@ -38,7 +39,7 @@ module "rg" {
   source  = "claranet/rg/azurerm"
   version = "x.x.x"
 
-  location    = module.azure-region.location
+  location    = module.azure_region.location
   client_name = var.client_name
   environment = var.environment
   stack       = var.stack
@@ -48,12 +49,13 @@ module "postgresql" {
   source  = "claranet/db-postgresql/azurerm"
   version = "x.x.x"
 
-  client_name         = var.client_name
+  client_name    = var.client_name
+  location       = module.azure_region.location
+  location_short = module.azure_region.location_short
+  environment    = var.environment
+  stack          = var.stack
+
   resource_group_name = module.rg.resource_group_name
-  location            = module.azure-region.location
-  location_short      = module.azure-region.location_short
-  environment         = var.environment
-  stack               = var.stack
 
   tier     = "GeneralPurpose"
   capacity = 4
@@ -63,12 +65,12 @@ module "postgresql" {
     "2" = "12.34.56.78/32"
   }
 
-  storage_mb                    = 5120
-  backup_retention_days         = 10
-  geo_redundant_backup_enabled  = true
-  auto_grow_enabled             = false
-  administrator_login    = var.administrator_login
-  administrator_password = var.administrator_password
+  storage_mb                   = 5120
+  backup_retention_days        = 10
+  geo_redundant_backup_enabled = true
+  auto_grow_enabled            = false
+  administrator_login          = var.administrator_login
+  administrator_password       = var.administrator_password
 
   force_ssl = true
 
@@ -76,11 +78,13 @@ module "postgresql" {
   databases_collation = { mydatabase = "en-US" }
   databases_charset   = { mydatabase = "UTF8" }
 
-  extra_tags = var.extra_tags
+  extra_tags = {
+    foo = "bar"
+  }
 }
+
 ```
 
-<!-- BEGIN_TF_DOCS -->
 ## Providers
 
 | Name | Version |
