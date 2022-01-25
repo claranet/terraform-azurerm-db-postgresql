@@ -126,18 +126,6 @@ variable "databases_collation" {
   default     = {}
 }
 
-variable "enable_logs_to_storage" {
-  description = "Boolean flag to specify whether the logs should be sent to the Storage Account"
-  type        = bool
-  default     = false
-}
-
-variable "enable_logs_to_log_analytics" {
-  description = "Boolean flag to specify whether the logs should be sent to Log Analytics"
-  type        = bool
-  default     = false
-}
-
 variable "create_databases_users" {
   description = "True to create a user named <db>_user per database with generated password and role db_owner."
   type        = bool
