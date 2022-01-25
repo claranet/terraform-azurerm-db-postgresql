@@ -28,18 +28,6 @@ variable "location_short" {
   type        = string
 }
 
-variable "name_prefix" {
-  description = "Optional prefix for PostgreSQL server name"
-  type        = string
-  default     = ""
-}
-
-variable "custom_server_name" {
-  type        = string
-  description = "Custom Server Name identifier"
-  default     = ""
-}
-
 variable "administrator_login" {
   description = "PostgreSQL administrator login"
   type        = string
@@ -148,18 +136,6 @@ variable "enable_logs_to_log_analytics" {
   description = "Boolean flag to specify whether the logs should be sent to Log Analytics"
   type        = bool
   default     = false
-}
-
-variable "logs_storage_account_id" {
-  description = "Storage Account id for logs"
-  type        = string
-  default     = ""
-}
-
-variable "logs_log_analytics_workspace_id" {
-  description = "Log Analytics Workspace id for logs"
-  type        = string
-  default     = ""
 }
 
 variable "create_databases_users" {
