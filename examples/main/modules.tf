@@ -68,4 +68,5 @@ module "postgresql" {
   extra_tags = {
     foo = "bar"
   }
+
 }

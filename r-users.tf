@@ -5,18 +5,117 @@ resource "random_password" "db_passwords" {
   length  = 32
 }
 
-resource "null_resource" "db_users" {
+resource "postgresql_role" "db_user" {
   for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
 
-  provisioner "local-exec" {
-    command = "ansible-playbook --extra-vars '{\"database_name\": ${each.value}, \"server_fqdn\": ${azurerm_postgresql_server.postgresql_server.fqdn}, \"administrator_user\": ${var.administrator_login}@${replace(azurerm_postgresql_server.postgresql_server.fqdn, ".postgres.database.azure.com", "")}, \"administrator_password\": ${var.administrator_password}, \"database_user_password\": ${random_password.db_passwords[each.value].result} }' --connection=local -i 127.0.0.1, main.yml"
+  name        = format("%s_user", each.value)
+  login       = true
+  password    = random_password.db_passwords[each.value].result
+  create_role = true
+  roles       = []
+  search_path = []
 
-    working_dir = "${path.module}/playbook-ansible"
-  }
+  provider = postgresql.psql
+}
 
-  triggers = {
-    database = azurerm_postgresql_database.postgresql_db[each.value].id
-  }
+resource "postgresql_grant" "revoke_public" {
+  for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
 
-  depends_on = [azurerm_postgresql_server.postgresql_server, azurerm_postgresql_database.postgresql_db, random_password.db_passwords]
+  database    = each.value
+  role        = "public"
+  schema      = "public"
+  object_type = "schema"
+  privileges  = []
+
+  provider = postgresql.psql
+
+}
+
+resource "postgresql_schema" "db_schema" {
+  for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
+
+  name     = each.value
+  database = each.value
+}
+
+resource "postgresql_default_privileges" "user_tables_priviliges" {
+  for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
+
+  role     = format("%s_user", each.value)
+  database = each.value
+  schema   = each.value
+
+  object_type = "table"
+  owner       = var.administrator_login
+  privileges = [
+    "SELECT",
+    "INSERT",
+    "UPDATE",
+    "DELETE",
+    "TRUNCATE",
+    "REFERENCES",
+    "TRIGGER",
+    # "CREATE",
+    # "CONNECT",
+    # "TEMPORARY",
+    # "EXECUTE",
+    # "USAGE",
+  ]
+
+  provider = postgresql.psql
+}
+
+resource "postgresql_default_privileges" "user_sequences_priviliges" {
+  for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
+
+  role     = format("%s_user", each.value)
+  database = each.value
+  schema   = each.value
+
+  object_type = "sequence"
+  owner       = var.administrator_login
+  privileges = [
+    "SELECT",
+    # "INSERT",
+    "UPDATE",
+    # "DELETE",
+    # "TRUNCATE",
+    # "REFERENCES",
+    # "TRIGGER",
+    # "CREATE",
+    # "CONNECT",
+    # "TEMPORARY",
+    # "EXECUTE",
+    "USAGE",
+  ]
+
+  provider = postgresql.psql
+}
+# ALTER DEFAULT PRIVILEGES IN SCHEMA {{ database_name }} GRANT ALL PRIVILEGES ON SEQUENCES TO {{ database_name }}_user;
+
+resource "postgresql_default_privileges" "user_functions_priviliges" {
+  for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
+
+  role     = format("%s_user", each.value)
+  database = each.value
+  schema   = each.value
+
+  object_type = "function"
+  owner       = var.administrator_login
+  privileges = [
+    # "SELECT",
+    # "INSERT",
+    # "UPDATE",
+    # "DELETE",
+    # "TRUNCATE",
+    # "REFERENCES",
+    # "TRIGGER",
+    # "CREATE",
+    # "CONNECT",
+    # "TEMPORARY",
+    "EXECUTE",
+    # "USAGE",
+  ]
+
+  provider = postgresql.psql
 }

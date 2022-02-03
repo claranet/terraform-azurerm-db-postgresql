@@ -24,6 +24,11 @@ output "postgresql_fqdn" {
   description = "FQDN of the PostgreSQL server"
 }
 
+output "postgresql_server_name" {
+  value       = local.postgresql_server_name
+  description = "PostgreSQL server name"
+}
+
 output "postgresql_server_id" {
   value       = azurerm_postgresql_server.postgresql_server.id
   description = "PostgreSQL server ID"

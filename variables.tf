@@ -131,3 +131,9 @@ variable "ssl_minimal_tls_version_enforced" {
   default     = null
   description = "The mimimun TLS version to support on the sever"
 }
+
+variable "public_network_access_enabled" {
+  description = "Whether or not public network access is allowed for this server."
+  type        = bool
+  default     = true
+}
