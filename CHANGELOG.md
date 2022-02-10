@@ -1,4 +1,8 @@
-# Unreleased
+# v5.0.0 - unreleased
+
+Breaking
+  * AZ-515: Option to use Azure CAF naming provider to name resources
+  * AZ-589: Add `diagnostic settings` module (latest v5.0.0)
 
 Changed
   * AZ-572: Revamp examples and improve CI
