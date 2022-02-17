@@ -1,7 +1,7 @@
 resource "random_password" "db_passwords" {
   for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
 
-  special = "false"
+  special = false
   length  = 32
 }
 
@@ -15,35 +15,39 @@ resource "postgresql_role" "db_user" {
   roles       = []
   search_path = []
 
-  provider = postgresql.psql
+  provider = postgresql.create_users
+
+  depends_on = [azurerm_postgresql_database.postgresql_db]
 }
 
 resource "postgresql_grant" "revoke_public" {
   for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
 
-  database    = each.value
+  database    = azurerm_postgresql_database.postgresql_db[each.value].name
   role        = "public"
   schema      = "public"
   object_type = "schema"
   privileges  = []
 
-  provider = postgresql.psql
-
+  provider = postgresql.create_users
 }
 
 resource "postgresql_schema" "db_schema" {
   for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
 
   name     = each.value
-  database = each.value
+  database = azurerm_postgresql_database.postgresql_db[each.value].name
+  owner    = postgresql_role.db_user[each.value].name
+
+  provider = postgresql.create_users
 }
 
-resource "postgresql_default_privileges" "user_tables_priviliges" {
+resource "postgresql_default_privileges" "user_tables_privileges" {
   for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
 
-  role     = format("%s_user", each.value)
+  role     = postgresql_role.db_user[each.value].name
   database = each.value
-  schema   = each.value
+  schema   = postgresql_schema.db_schema[each.value].name
 
   object_type = "table"
   owner       = var.administrator_login
@@ -62,15 +66,15 @@ resource "postgresql_default_privileges" "user_tables_priviliges" {
     # "USAGE",
   ]
 
-  provider = postgresql.psql
+  provider = postgresql.create_users
 }
 
 resource "postgresql_default_privileges" "user_sequences_priviliges" {
   for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
 
-  role     = format("%s_user", each.value)
-  database = each.value
-  schema   = each.value
+  role     = postgresql_role.db_user[each.value].name
+  database = azurerm_postgresql_database.postgresql_db[each.value].name
+  schema   = postgresql_schema.db_schema[each.value].name
 
   object_type = "sequence"
   owner       = var.administrator_login
@@ -89,16 +93,16 @@ resource "postgresql_default_privileges" "user_sequences_priviliges" {
     "USAGE",
   ]
 
-  provider = postgresql.psql
+  provider = postgresql.create_users
 }
 # ALTER DEFAULT PRIVILEGES IN SCHEMA {{ database_name }} GRANT ALL PRIVILEGES ON SEQUENCES TO {{ database_name }}_user;
 
 resource "postgresql_default_privileges" "user_functions_priviliges" {
   for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
 
-  role     = format("%s_user", each.value)
-  database = each.value
-  schema   = each.value
+  role     = postgresql_role.db_user[each.value].name
+  database = azurerm_postgresql_database.postgresql_db[each.value].name
+  schema   = postgresql_schema.db_schema[each.value].name
 
   object_type = "function"
   owner       = var.administrator_login
@@ -117,5 +121,5 @@ resource "postgresql_default_privileges" "user_functions_priviliges" {
     # "USAGE",
   ]
 
-  provider = postgresql.psql
+  provider = postgresql.create_users
 }

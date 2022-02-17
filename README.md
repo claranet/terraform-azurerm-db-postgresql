@@ -109,8 +109,7 @@ module "postgresql" {
 |------|---------|
 | azurecaf | ~> 1.1 |
 | azurerm | >= 2.7 |
-| postgresql | >= 1.14 |
-| postgresql.psql | >= 1.14 |
+| postgresql.create\_users | >= 1.14 |
 | random | >= 3.0 |
 
 ## Modules
@@ -132,7 +131,7 @@ module "postgresql" {
 | [azurerm_postgresql_virtual_network_rule.vnet_rules](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_virtual_network_rule) | resource |
 | [postgresql_default_privileges.user_functions_priviliges](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/default_privileges) | resource |
 | [postgresql_default_privileges.user_sequences_priviliges](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/default_privileges) | resource |
-| [postgresql_default_privileges.user_tables_priviliges](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/default_privileges) | resource |
+| [postgresql_default_privileges.user_tables_privileges](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/default_privileges) | resource |
 | [postgresql_grant.revoke_public](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
 | [postgresql_role.db_user](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/role) | resource |
 | [postgresql_schema.db_schema](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/schema) | resource |
@@ -191,7 +190,8 @@ module "postgresql" {
 | postgresql\_firewall\_rules | Map of PostgreSQL created rules |
 | postgresql\_fqdn | FQDN of the PostgreSQL server |
 | postgresql\_server\_id | PostgreSQL server ID |
-| postgresql\_users\_passwords | Map of passwords for databases users |
+| postgresql\_server\_name | PostgreSQL server name |
+| postgresql\_users\_credentials | Map of credentials for databases users |
 | postgresql\_vnet\_rules | The map of all vnet rules |
 <!-- END_TF_DOCS -->
 ## Related documentation

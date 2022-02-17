@@ -3,7 +3,7 @@
 Breaking
   * AZ-515: Option to use Azure CAF naming provider to name resources
   * AZ-589: Add `diagnostic settings` module (latest v5.0.0)
-  * AZ-501: Replace ansible with postgresql provider
+  * AZ-501: Replace ansible with postgresql provider for user creation
 
 Added
   * AZ-615: Add an option to enable or disable default tags

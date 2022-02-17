@@ -6,5 +6,5 @@ provider "postgresql" {
   sslmode   = "require"
   superuser = false
 
-  alias = "psql"
+  alias = "create_users"
 }

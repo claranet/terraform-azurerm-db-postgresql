@@ -44,8 +44,8 @@ output "postgresql_configurations" {
   description = "The map of all postgresql configurations set"
 }
 
-output "postgresql_users_passwords" {
-  value       = random_password.db_passwords
-  description = "Map of passwords for databases users"
+output "postgresql_users_credentials" {
+  value       = { for db in var.databases_names : format("%s_user@%s", db, azurerm_postgresql_server.postgresql_server.name) => random_password.db_passwords[db].result }
+  description = "Map of credentials for databases users"
   sensitive   = true
 }
