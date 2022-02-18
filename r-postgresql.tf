@@ -16,6 +16,7 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   ssl_enforcement_enabled      = var.force_ssl
 
   ssl_minimal_tls_version_enforced = var.ssl_minimal_tls_version_enforced
+  public_network_access_enabled    = var.public_network_access_enabled
 
   tags = merge(
     local.default_tags,

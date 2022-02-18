@@ -24,6 +24,11 @@ output "postgresql_fqdn" {
   description = "FQDN of the PostgreSQL server"
 }
 
+output "postgresql_server_name" {
+  value       = local.postgresql_server_name
+  description = "PostgreSQL server name"
+}
+
 output "postgresql_server_id" {
   value       = azurerm_postgresql_server.postgresql_server.id
   description = "PostgreSQL server ID"
@@ -39,8 +44,8 @@ output "postgresql_configurations" {
   description = "The map of all postgresql configurations set"
 }
 
-output "postgresql_users_passwords" {
-  value       = random_password.db_passwords
-  description = "Map of passwords for databases users"
+output "postgresql_users_credentials" {
+  value       = var.create_databases_users ? { for db in var.databases_names : format("%s_user@%s", db, azurerm_postgresql_server.postgresql_server.name) => random_password.db_passwords[db].result } : {}
+  description = "Map of credentials for databases users"
   sensitive   = true
 }

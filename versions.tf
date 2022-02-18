@@ -5,10 +5,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 2.7"
     }
-    null = {
-      source  = "hashicorp/null"
-      version = ">= 3.0"
-    }
     random = {
       source  = "hashicorp/random"
       version = ">= 3.0"
@@ -16,6 +12,10 @@ terraform {
     azurecaf = {
       source  = "aztfmod/azurecaf"
       version = "~> 1.1"
+    }
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = ">= 1.14"
     }
   }
 }
