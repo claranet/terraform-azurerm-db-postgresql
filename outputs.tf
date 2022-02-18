@@ -45,7 +45,7 @@ output "postgresql_configurations" {
 }
 
 output "postgresql_users_credentials" {
-  value       = { for db in var.databases_names : format("%s_user@%s", db, azurerm_postgresql_server.postgresql_server.name) => random_password.db_passwords[db].result }
+  value       = var.create_databases_users ? { for db in var.databases_names : format("%s_user@%s", db, azurerm_postgresql_server.postgresql_server.name) => random_password.db_passwords[db].result } : {}
   description = "Map of credentials for databases users"
   sensitive   = true
 }
