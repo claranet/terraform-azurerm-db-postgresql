@@ -43,12 +43,6 @@ variable "allowed_cidrs" {
   description = "Map of authorized cidrs, must be provided using remote states cloudpublic/cloudpublic/global/vars/terraform.state"
 }
 
-variable "extra_tags" {
-  type        = map(string)
-  description = "Map of custom tags"
-  default     = {}
-}
-
 variable "tier" {
   type        = string
   description = "Tier for PostgreSQL server sku : https://docs.microsoft.com/en-us/azure/postgresql/concepts-pricing-tiers Possible values are: GeneralPurpose, Basic, MemoryOptimized"

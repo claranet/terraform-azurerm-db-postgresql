@@ -148,8 +148,9 @@ module "postgresql" {
 | databases\_charset | Valid PostgreSQL charset : https://www.postgresql.org/docs/current/multibyte.html#CHARSET-TABLE | `map(string)` | `{}` | no |
 | databases\_collation | Valid PostgreSQL collation : http://www.postgresql.cn/docs/9.4/collation.html - be careful about https://docs.microsoft.com/en-us/windows/win32/intl/locale-names?redirectedfrom=MSDN | `map(string)` | `{}` | no |
 | databases\_names | List of databases names | `list(string)` | n/a | yes |
+| default\_tags\_enabled | Option to enable or disable default tags | `bool` | `true` | no |
 | environment | Name of application's environnement | `string` | n/a | yes |
-| extra\_tags | Map of custom tags | `map(string)` | `{}` | no |
+| extra\_tags | Extra tags to add | `map(string)` | `{}` | no |
 | force\_ssl | Force usage of SSL | `bool` | `true` | no |
 | geo\_redundant\_backup\_enabled | Turn Geo-redundant server backups on/off. Not available for the Basic tier. | `bool` | `true` | no |
 | location | Azure location for Key Vault. | `string` | n/a | yes |
