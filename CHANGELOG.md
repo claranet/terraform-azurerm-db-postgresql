@@ -1,4 +1,4 @@
-# v5.0.0 - unreleased
+# unreleased
 
 Breaking
   * AZ-515: Option to use Azure CAF naming provider to name resources

@@ -59,11 +59,6 @@ resource "postgresql_default_privileges" "user_tables_privileges" {
     "TRUNCATE",
     "REFERENCES",
     "TRIGGER",
-    # "CREATE",
-    # "CONNECT",
-    # "TEMPORARY",
-    # "EXECUTE",
-    # "USAGE",
   ]
 
   provider = postgresql.create_users
@@ -80,22 +75,12 @@ resource "postgresql_default_privileges" "user_sequences_priviliges" {
   owner       = var.administrator_login
   privileges = [
     "SELECT",
-    # "INSERT",
     "UPDATE",
-    # "DELETE",
-    # "TRUNCATE",
-    # "REFERENCES",
-    # "TRIGGER",
-    # "CREATE",
-    # "CONNECT",
-    # "TEMPORARY",
-    # "EXECUTE",
     "USAGE",
   ]
 
   provider = postgresql.create_users
 }
-# ALTER DEFAULT PRIVILEGES IN SCHEMA {{ database_name }} GRANT ALL PRIVILEGES ON SEQUENCES TO {{ database_name }}_user;
 
 resource "postgresql_default_privileges" "user_functions_priviliges" {
   for_each = var.create_databases_users ? toset(var.databases_names) : toset([])
@@ -107,18 +92,7 @@ resource "postgresql_default_privileges" "user_functions_priviliges" {
   object_type = "function"
   owner       = var.administrator_login
   privileges = [
-    # "SELECT",
-    # "INSERT",
-    # "UPDATE",
-    # "DELETE",
-    # "TRUNCATE",
-    # "REFERENCES",
-    # "TRIGGER",
-    # "CREATE",
-    # "CONNECT",
-    # "TEMPORARY",
     "EXECUTE",
-    # "USAGE",
   ]
 
   provider = postgresql.create_users
