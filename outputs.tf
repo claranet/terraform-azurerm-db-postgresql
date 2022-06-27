@@ -4,6 +4,12 @@ output "postgresql_administrator_login" {
   sensitive   = true
 }
 
+output "postgresql_administrator_password" {
+  value       = var.administrator_password
+  description = "Administrator password for PostgreSQL server"
+  sensitive   = true
+}
+
 output "postgresql_databases_names" {
   value       = azurerm_postgresql_database.postgresql_db
   description = "Map of databases names"

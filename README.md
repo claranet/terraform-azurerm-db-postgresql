@@ -183,6 +183,7 @@ module "postgresql" {
 | Name | Description |
 |------|-------------|
 | postgresql\_administrator\_login | Administrator login for PostgreSQL server |
+| postgresql\_administrator\_password | Administrator password for PostgreSQL server |
 | postgresql\_configurations | The map of all postgresql configurations set |
 | postgresql\_database\_ids | The map of all database resource ids |
 | postgresql\_databases\_names | Map of databases names |
