@@ -192,6 +192,7 @@ module "postgresql" {
 | postgresql\_server\_name | PostgreSQL server name |
 | postgresql\_users\_credentials | Map of credentials for databases users |
 | postgresql\_vnet\_rules | The map of all vnet rules |
+| terraform\_module | Information about this Terraform module |
 <!-- END_TF_DOCS -->
 ## Related documentation
 
