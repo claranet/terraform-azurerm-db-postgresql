@@ -15,6 +15,7 @@ the public schema regarding the [CVE-2018-1058](https://wiki.postgresql.org/wiki
 
 | Module version | Terraform version | AzureRM version |
 | -------------- | ----------------- | --------------- |
+| >= 7.x.x       | 1.3.x             | >= 3.0          |
 | >= 6.x.x       | 1.x               | >= 3.0          |
 | >= 5.x.x       | 0.15.x            | >= 2.0          |
 | >= 4.x.x       | 0.13.x / 0.14.x   | >= 2.0          |
