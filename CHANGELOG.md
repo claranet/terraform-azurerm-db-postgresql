@@ -1,4 +1,4 @@
-# Unreleased
+# v5.2.0 - 2022-11-10
 
 Changed
   * AZ-901: Change default value for `public_network_access_enabled` variable to `false`
