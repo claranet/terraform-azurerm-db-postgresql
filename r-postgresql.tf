@@ -34,7 +34,7 @@ resource "azurerm_postgresql_database" "postgresql_db" {
 }
 
 resource "azurerm_postgresql_configuration" "postgresql_config" {
-  for_each            = var.postgresql_configurations
+  for_each            = merge(local.default_configurations, var.postgresql_configurations)
   name                = each.key
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name

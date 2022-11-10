@@ -169,7 +169,7 @@ module "postgresql" {
 | name\_suffix | Optional suffix for the generated name | `string` | `""` | no |
 | postgresql\_configurations | PostgreSQL configurations to enable | `map(string)` | `{}` | no |
 | postgresql\_version | Valid values are 9.5, 9.6, 10, 10.0, and 11 | `string` | `"11"` | no |
-| public\_network\_access\_enabled | Whether or not public network access is allowed for this server. | `bool` | `true` | no |
+| public\_network\_access\_enabled | Whether or not public network access is allowed for this server. | `bool` | `false` | no |
 | resource\_group\_name | Name of the application ressource group, herited from infra module | `string` | n/a | yes |
 | ssl\_minimal\_tls\_version\_enforced | The mimimun TLS version to support on the sever | `string` | `null` | no |
 | stack | Name of application stack | `string` | n/a | yes |

@@ -135,5 +135,5 @@ variable "ssl_minimal_tls_version_enforced" {
 variable "public_network_access_enabled" {
   description = "Whether or not public network access is allowed for this server."
   type        = bool
-  default     = true
+  default     = false
 }
