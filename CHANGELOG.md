@@ -1,5 +1,6 @@
 # Unreleased
 
+Changed
   * AZ-901: Change default value for `public_network_access_enabled` variable to `false`
   * AZ-901: Add PostgreSQL configuration for logging connections and checkpoints, and enable connection throttling
 
