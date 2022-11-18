@@ -26,7 +26,7 @@ resource "azurerm_postgresql_server" "postgresql_server" {
 
 resource "azurerm_postgresql_database" "postgresql_db" {
   for_each            = toset(var.databases_names)
-  name                = var.use_caf_naming_for_databases ? azurecaf_name.postgresql_dbs[each.value].result : each.value
+  name                = var.use_caf_naming_for_databases ? data.azurecaf_name.postgresql_dbs[each.value].result : each.value
   resource_group_name = var.resource_group_name
   server_name         = azurerm_postgresql_server.postgresql_server.name
   charset             = lookup(var.databases_charset, each.value, "UTF8")
