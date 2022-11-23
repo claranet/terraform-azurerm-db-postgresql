@@ -108,7 +108,7 @@ module "postgresql" {
 | Name | Version |
 |------|---------|
 | azurecaf | ~> 1.2, >= 1.2.22 |
-| azurerm | >= 2.7 |
+| azurerm | >= 3.22 |
 | postgresql.create\_users | >= 1.14 |
 | random | >= 3.0 |
 
