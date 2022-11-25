@@ -1,4 +1,7 @@
-# Unreleased
+# v6.0.0 - 2022-11-25
+
+Breaking
+  * AZ-839: Require Terraform 1.1+ and AzureRM provider `v3.22+`
 
 Changed
   * AZ-908: Use the new data source for CAF naming (instead of resource)
