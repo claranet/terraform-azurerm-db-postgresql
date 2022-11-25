@@ -1,9 +1,9 @@
 terraform {
-  required_version = "> 0.13"
+  required_version = ">= 1.1"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 2.7"
+      version = ">= 3.22"
     }
     random = {
       source  = "hashicorp/random"
@@ -11,7 +11,7 @@ terraform {
     }
     azurecaf = {
       source  = "aztfmod/azurecaf"
-      version = "~> 1.1"
+      version = "~> 1.2, >= 1.2.22"
     }
     postgresql = {
       source  = "cyrilgdn/postgresql"
