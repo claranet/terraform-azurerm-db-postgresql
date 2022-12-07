@@ -69,3 +69,26 @@ module "postgresql" {
     foo = "bar"
   }
 }
+
+provider "postgresql" {
+  host      = module.postgresql.postgresql_fqdn
+  port      = 5432
+  username  = var.administrator_login
+  password  = var.administrator_password
+  sslmode   = "require"
+  superuser = false
+}
+
+module "postgresql_users" {
+  # source  = "claranet/users/postgresql"
+  # version = "x.x.x"
+  source = "git::ssh://git@git.fr.clara.net/claranet/projects/cloud/azure/terraform/postgresql-users.git?ref=AZ-930_postgresql_users_module"
+
+  for_each = toset(module.postgresql.postgresql_databases_names)
+
+  administrator_login = var.administrator_login
+
+  user_suffix_enabled = true
+  user                = each.key
+  database            = each.key
+}

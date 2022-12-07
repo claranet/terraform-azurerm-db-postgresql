@@ -120,12 +120,6 @@ variable "databases_collation" {
   default     = {}
 }
 
-variable "create_databases_users" {
-  description = "True to create a user named <db>_user per database with generated password and role db_owner."
-  type        = bool
-  default     = true
-}
-
 variable "ssl_minimal_tls_version_enforced" {
   type        = string
   default     = null
