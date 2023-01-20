@@ -1,3 +1,8 @@
+# Unreleased
+
+Breaking
+  * AZ-930: Externalize `postgresql-users` and `postgresql-database-configuration` as separated modules in dedicated repo
+
 # v6.0.0 - 2022-11-25
 
 Breaking

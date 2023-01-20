@@ -27,6 +27,11 @@ module "logs" {
   resource_group_name = module.rg.resource_group_name
 }
 
+resource "random_password" "admin_password" {
+  special = "false"
+  length  = 32
+}
+
 module "postgresql" {
   source  = "claranet/db-postgresql/azurerm"
   version = "x.x.x"
@@ -51,8 +56,9 @@ module "postgresql" {
   backup_retention_days        = 10
   geo_redundant_backup_enabled = true
   auto_grow_enabled            = false
-  administrator_login          = var.administrator_login
-  administrator_password       = var.administrator_password
+
+  administrator_login    = "azureadmin"
+  administrator_password = random_password.admin_password.result
 
   force_ssl = true
 
@@ -68,4 +74,37 @@ module "postgresql" {
   extra_tags = {
     foo = "bar"
   }
+}
+
+provider "postgresql" {
+  host      = module.postgresql.postgresql_fqdn
+  port      = 5432
+  username  = module.postgresql.postgresql_administrator_login
+  password  = module.postgresql.postgresql_administrator_password
+  sslmode   = "require"
+  superuser = false
+}
+
+module "postgresql_users" {
+  source  = "claranet/users/postgresql"
+  version = "x.x.x"
+
+  for_each = toset(module.postgresql.postgresql_databases_names)
+
+  administrator_login = module.postgresql.postgresql_administrator_login
+
+  database = each.key
+}
+
+module "postgresql_configuration" {
+  source  = "claranet/database-configuration/postgresql"
+  version = "x.x.x"
+
+  for_each = toset(module.postgresql.postgresql_databases_names)
+
+  administrator_login = module.postgresql.postgresql_administrator_login
+
+  database_admin_user = module.postgresql_users[each.key].user
+  database            = each.key
+  schema_name         = each.key
 }
