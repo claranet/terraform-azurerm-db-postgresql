@@ -1,3 +1,8 @@
+# Unreleased
+
+Fixed
+  * AZ-989: Add `pre-commit` and update CI
+
 # v6.1.0 - 2023-01-24
 
 Breaking
@@ -56,7 +61,7 @@ Fixed
 # v4.0.1 - 2021-07-07
 
 Changed
-  * AZ-518: Fix README 
+  * AZ-518: Fix README
 
 # v4.0.0 - 2021-01-18
 

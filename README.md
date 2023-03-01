@@ -1,6 +1,9 @@
-# Azure Managed PostgreSQL Service
+# DEPRECATED - Azure Managed PostgreSQL Service
 
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/db-postgresql/azurerm/)
+
+| ⚠ This module is deprecated, please use [db-postgresql-flexible](https://registry.terraform.io/modules/claranet/db-postgresql-flexible/azurerm/) module |
+|--|
 
 This module creates an [Azure PostgreSQL server](https://www.terraform.io/docs/providers/azurerm/r/postgresql_server.html)
 with [databases](https://www.terraform.io/docs/providers/azurerm/r/postgresql_database.html) along with logging activated,
